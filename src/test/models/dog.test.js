@@ -1,7 +1,7 @@
 /* import { should } from 'chai';
 import { describe, it, beforeEach } from 'mocha'; */
 import { describe, it } from 'mocha';
-import Dog from '../dog';
+import Dog from '../../models/dog';
 
 const assert = require('chai').assert;
 

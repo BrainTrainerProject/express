@@ -4,7 +4,8 @@
   "description": "Brain Train R",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp build && node lib/",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -16,8 +17,33 @@
     "url": "https://github.com/AndrejSperling/BrainTrainer/issues"
   },
   "homepage": "https://github.com/AndrejSperling/BrainTrainer#readme",
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "plugins": [
+      "import"
+    ]
+  },
   "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.4.1",
     "express": "^4.15.2",
-	"bt-cyclejs":"git+https://github.com/BrainTrainerProject/cyclejs.git"
+    "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git"
+  },
+  "devDependencies": {
+    "babel-preset-latest": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^4.3.1"
   }
 }

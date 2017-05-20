@@ -2,10 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import path from 'path';
+import socketio from 'socket.io';
+import http from 'http';
 import frontend from 'bt-cyclejs';// name vom module wie er im package steht
 import router from './router';
 
 const app = express();
+const server = http.Server(app);
+const io = socketio(server);
 
 app.use(express.static('src/public'));
 app.use(bodyParser.json());
@@ -21,6 +25,23 @@ frontend.buildWebApp(examplePath);
 
 app.use('/api', router);
 
-app.listen(8080, () => {
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  setTimeout(() => {
+    socket.send('Sent a message 4 seconds after connection!');
+  }, 4000);
+
+  socket.on('message', (msg) => {
+    console.log(`message: ${msg}`);
+    io.emit('message', msg); // Nachricht an ALLE verteilen
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+server.listen(8080, () => {
   console.log('Server is listening on port 8080');
 });

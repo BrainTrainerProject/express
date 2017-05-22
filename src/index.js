@@ -27,6 +27,7 @@ app.use(morgan('combined', { immediate: true }));
 app.use('/api', router);
 websocket(server);
 
+const prt = process.env.PORT || conf.port;
 app.listen(conf.port, () => {
-  console.log(`Server is listening on port ${conf.port}`);
+  console.log(`Server is listening on port ${prt}`);
 });

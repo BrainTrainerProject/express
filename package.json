@@ -6,7 +6,6 @@
   "scripts": {
     "start": "gulp build && node lib/",
     "test": "gulp test",
-    "heroku-prebuild": "heroku config:set NPM_CONFIG_PRODUCTION=false"
   },
   "repository": {
     "type": "git",
@@ -37,9 +36,7 @@
     "express": "^4.15.2",
     "mocha": "^3.4.1",
     "morgan": "^1.8.1",
-    "socket.io": "^2.0.1"
-  },
-  "devDependencies": {
+    "socket.io": "^2.0.1",
     "babel-preset-latest": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
@@ -50,5 +47,8 @@
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^4.3.1"
+  },
+  "devDependencies": {
+    
   }
 }

@@ -1,9 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import path from 'path';
 import http from 'http';
-import frontend from 'bt-cyclejs';// name vom module wie er im package steht
 import router from './router';
 import websocket from './websocket';
 
@@ -21,8 +19,10 @@ app.use(morgan('combined', { immediate: true }));
 // ab hier ist cyclejs repo für den build zuständig
 //
 // folder 'cwd + ./public_custom_folder'
-const examplePath = path.resolve(process.cwd(), './public_custom_folder');
-frontend.buildWebApp(examplePath);
+// const examplePath = path.resolve(process.cwd(), './public_custom_folder');
+// frontend.buildWebApp(examplePath);
+// import frontend from 'bt-cyclejs';// name vom module wie er im package steht
+// import path from 'path';
 
 app.use('/api', router);
 websocket(server);

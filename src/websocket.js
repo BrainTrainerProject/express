@@ -1,7 +1,7 @@
 import socketio from 'socket.io';
 
-function createApplication(httpServer) {
-  const io = socketio(httpServer);
+function createApplication(server) {
+  const io = socketio(server);
 
   io.on('connection', (socket) => {
     console.log('a user connected');

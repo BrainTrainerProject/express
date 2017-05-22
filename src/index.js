@@ -1,14 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import http from 'http';
+// import http from 'http';
 import router from './router';
-import websocket from './websocket';
+// import websocket from './websocket';
 
 const conf = require('./config.json');
 
 const app = express();
-const server = http.Server(app);
+// const server = http.Server(app);
 
 app.use(express.static('src/public'));
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ app.use(morgan('combined', { immediate: true }));
 // import path from 'path';
 
 app.use('/api', router);
-websocket(server);
+// websocket(server);
 
 const prt = process.env.PORT || conf.port;
 app.listen(conf.port, () => {

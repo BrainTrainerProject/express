@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "gulp build && node lib/",
-    "test": "gulp test",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -47,8 +47,5 @@
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^4.3.1"
-  },
-  "devDependencies": {
-    
   }
 }

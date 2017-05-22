@@ -14,6 +14,8 @@ app.use(express.static('src/public'));
 app.use(bodyParser.json());
 app.use(morgan('combined', { immediate: true }));
 
+app.set('port', (process.env.PORT || conf.port));
+
 // Über buildWebApp() soll später der Public Ordner mit Inhalt generiert werden
 // kann jetzt theoretisch genutzt werden,
 // ab hier ist cyclejs repo für den build zuständig
@@ -27,7 +29,6 @@ app.use(morgan('combined', { immediate: true }));
 app.use('/api', router);
 // websocket(server);
 
-const prt = process.env.PORT || conf.port;
-app.listen(conf.port, () => {
-  console.log(`Server is listening on port ${prt}`);
+app.listen(app.get('port'), () => {
+  console.log(`Server is listening on port ${app.get('port')}`);
 });

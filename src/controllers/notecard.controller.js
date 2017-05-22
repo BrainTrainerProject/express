@@ -1,14 +1,9 @@
-import Notecard from '../models/notecard.model';
-
-function listCardsAction(req, res) {
-  const notecard = new Notecard();
-  const data = notecard.getCards();
-
-  res.json(data);
-}
+import dbmodel from 'bt-mongodb';
 
 function listAction(req, res) {
-  res.send('Hallo list!');
+  dbmodel.notecard.findAll((err, map) => {
+    res.send(map);
+  });
 }
 
-export default { listCardsAction, listAction };
+export default { listAction };

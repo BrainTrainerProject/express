@@ -3,7 +3,7 @@ import notecardController from './controllers/notecard.controller';
 
 const router = express.Router();
 
-router.get('/notecard', notecardController.listCardsAction);
+router.get('/notecard', notecardController.listAction);
 router.post('/notecard', (req, res) => {
   res.send('Not yet implemented');
 });

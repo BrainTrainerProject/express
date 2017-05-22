@@ -29,23 +29,24 @@
     ]
   },
   "dependencies": {
+    "babel-preset-latest": "^6.24.1",
     "body-parser": "^1.17.1",
     "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git",
     "bt-mongodb": "git+https://github.com/BrainTrainerProject/mongodb.git",
     "chai": "^3.5.0",
-    "express": "^4.15.2",
-    "mocha": "^3.4.1",
-    "morgan": "^1.8.1",
-    "socket.io": "^2.0.1",
-    "babel-preset-latest": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^5.0.1",
     "eslint-plugin-react": "^7.0.1",
+    "express": "^4.15.2",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
-    "gulp-mocha": "^4.3.1"
+    "gulp-mocha": "^4.3.1",
+    "mocha": "^3.4.1",
+    "mongoose": "^4.10.1",
+    "morgan": "^1.8.1",
+    "socket.io": "^2.0.1"
   }
 }

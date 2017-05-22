@@ -7,6 +7,8 @@ gulp.task('build', ['lint'], () =>
   gulp.src(['src/**/*.js'])
     .pipe(babel())
     .pipe(gulp.dest('lib')),
+  gulp.src(['src/**/*.json'])
+    .pipe(gulp.dest('lib')),
 );
 
 gulp.task('lint', () =>

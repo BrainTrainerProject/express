@@ -1,7 +1,10 @@
 import express from 'express';
 import notecardController from './controllers/notecard.controller';
+import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
+
+router.use(apiauthorization);
 
 router.get('/notecard', notecardController.listAction);
 router.post('/notecard', (req, res) => {

@@ -1,3 +1,6 @@
+// import dbmodels from 'bt-mongodb';
+//
+// ueber dbmodels.profile muesstest du Zugriff auf die Funktionen kriegen
 
 module.exports = (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {

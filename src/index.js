@@ -2,8 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import http from 'http';
-import mongoose from 'mongoose';
-import dbmodel from 'bt-mongodb';
+import dbmodels from 'bt-mongodb';
 import router from './router';
 import websocket from './websocket';
 
@@ -13,12 +12,11 @@ const app = express();
 const server = http.Server(app);
 
 app.use(express.static('src/public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('combined', { immediate: true }));
 
 app.set('port', (process.env.PORT || conf.port));
-
-console.log(dbmodel);
 
 // Über buildWebApp() soll später der Public Ordner mit Inhalt generiert werden
 // kann jetzt theoretisch genutzt werden,
@@ -33,8 +31,7 @@ console.log(dbmodel);
 app.use('/api', router);
 websocket(server);
 
-// mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://brain:Trainer#2017@ds057806.mlab.com:57806/heroku_b8p1c09m', (err) => {
+dbmodels.connect('mongodb://brain:Trainer#2017@ds057806.mlab.com:57806/heroku_b8p1c09m', (err) => {
   if (err) {
     console.log('Unable to connect to MongoDB');
     process.exit(1);

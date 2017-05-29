@@ -1,21 +1,16 @@
 import express from 'express';
 import notecardController from './controllers/notecard.controller';
-import apiauthorization from './middleware/apiauthorization';
+// import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
 
-router.use(apiauthorization);
+// router.use(apiauthorization);
 
-router.get('/notecard', notecardController.listAction);
-router.post('/notecard', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.put('/notecard', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.delete('/notecard', (req, res) => {
-  res.send('Not yet implemented');
-});
+router.get('/notecard/:id', notecardController.getByIdAction);
+router.get('/notecard', notecardController.getAllAction);
+router.post('/notecard', notecardController.createAction);
+router.put('/notecard/:id', notecardController.updateAction);
+router.delete('/notecard/:id', notecardController.deleteAction);
 
 router.get('/set', (req, res) => {
   res.send('Not yet implemented');

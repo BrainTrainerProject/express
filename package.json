@@ -32,7 +32,6 @@
     "babel-preset-latest": "^6.24.1",
     "body-parser": "^1.17.1",
     "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git",
-    "bt-mongodb": "git+https://github.com/BrainTrainerProject/mongodb.git",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",

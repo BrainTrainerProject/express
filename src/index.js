@@ -31,7 +31,7 @@ app.set('port', (process.env.PORT || conf.port));
 app.use('/api', router);
 websocket(server);
 
-dbmodels.connect('mongodb://brain:Trainer#2017@ds057806.mlab.com:57806/heroku_b8p1c09m', (err) => {
+dbmodels.connect(conf.mongodb, (err) => {
   if (err) {
     console.log('Unable to connect to MongoDB');
     process.exit(1);

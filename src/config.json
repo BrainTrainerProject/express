@@ -1,4 +1,4 @@
 {
   "port": 8080,
-  "mongodb": "mongodb://localhost:27017/test"
+  "mongodb": "mongodb://brain:Trainer#2017@ds057806.mlab.com:57806/heroku_b8p1c09m"
 }

@@ -1,7 +1,7 @@
 import dbmodel from 'bt-mongodb';
 
 function getAllAction(req, res) {
-  dbmodel.notecard.findAll((err, map) => {
+  dbmodel.set.findAll((err, map) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');
@@ -12,7 +12,7 @@ function getAllAction(req, res) {
 }
 
 function getByIdAction(req, res) {
-  dbmodel.notecard.findById(req.params.id, (err, card) => {
+  dbmodel.set.findById(req.params.id, (err, card) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');
@@ -24,29 +24,29 @@ function getByIdAction(req, res) {
 
 function createAction(req, res) {
   // TODO: Aus sicherheitstechnischen Gruenden wuerde man eigentlich req.body filtern
-  dbmodel.notecard.createNotecard(req.body, (err, newCard) => {
+  dbmodel.set.createSet(req.body, (err, newSet) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');
     } else {
-      res.send(newCard);
+      res.send(newSet);
     }
   });
 }
 
 function updateAction(req, res) {
-  dbmodel.notecard.updateNotecard(req.params.id, req.body, (err, changedCard) => {
+  dbmodel.set.updateSet(req.params.id, req.body, (err, changedSet) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');
     } else {
-      res.send(changedCard);
+      res.send(changedSet);
     }
   });
 }
 
 function deleteAction(req, res) {
-  dbmodel.notecard.deleteNotecard(req.params.id, (err, result) => {
+  dbmodel.set.deleteSet(req.params.id, (err, result) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');

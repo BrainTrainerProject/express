@@ -11,7 +11,7 @@ const conf = require('./config.json');
 const app = express();
 const server = http.Server(app);
 
-app.use(express.static('src/public'));
+app.use(express.static('lib/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('combined', { immediate: true }));

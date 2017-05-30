@@ -36,7 +36,7 @@ gulp.task('test', ['build'], function () {
 
 const cycleFolder = './node_modules/bt-cyclejs/';
 const buildFolder = './node_modules/bt-cyclejs/build/';
-const moveToFolder = './public/';
+const moveToFolder = './lib/public/';
 
 gulp.task("build:webview", function (callback) {
     runSequence(

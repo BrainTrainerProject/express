@@ -53,5 +53,12 @@
     "morgan": "^1.8.1",
     "socket.io": "^2.0.1",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "gulp-stylus": "^2.6.0",
+    "gulp-typescript": "^3.1.7",
+    "run-sequence": "^1.2.2",
+    "typescript": "^2.3.3"
   }
 }

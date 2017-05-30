@@ -1,18 +1,25 @@
-// import dbmodels from 'bt-mongodb';
-//
-// ueber dbmodels.profile muesstest du Zugriff auf die Funktionen kriegen
+import dbmodels from 'bt-mongodb';
 
 module.exports = (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     const authToken = req.headers.authorization.split(' ')[1];
 
-    // Suche nach Profile in unserer Datenbank
-    // TODO: Nur zum testen
-    if (authToken !== 'das_ist_ein_geheimnis') {
-      return next(new Error('Das Token stimmt nicht überein'));
+    if (authToken === undefined) {
+      next(new Error('The token is undefined'));
     }
-    return next();
-  }
 
-  return next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
+    dbmodels.profile.findByOauthtoken(authToken, (err, profile) => {
+      if (err) {
+        next(new Error('Error in findIdByOauthtoken'));
+      }
+
+      if (!profile) {
+        next(new Error('No matching profile found'));
+      }
+
+      next();
+    });
+  } else {
+    next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
+  }
 };

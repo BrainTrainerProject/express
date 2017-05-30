@@ -2,6 +2,8 @@ import express from 'express';
 import notecardController from './controllers/notecard.controller';
 import setController from './controllers/set.controller';
 import profileController from './controllers/profile.controller';
+import statisticController from './controllers/statistic.controller';
+import valuationController from './controllers/valuation.controller';
 // import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
@@ -26,30 +28,16 @@ router.post('/profile', profileController.createAction);
 router.put('/profile/:id', profileController.updateAction);
 router.delete('/profile/:id', profileController.deleteAction);
 
-router.get('/valuation', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.post('/valuation', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.put('/valuation', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.delete('/valuation', (req, res) => {
-  res.send('Not yet implemented');
-});
+router.get('/valuation/:id', valuationController.getByIdAction);
+router.get('/valuation', valuationController.getAllAction);
+router.post('/valuation', valuationController.createAction);
+router.put('/valuation', valuationController.updateAction);
+router.delete('/valuation', valuationController.deleteAction);
 
-router.get('/statistic', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.post('/statistic', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.put('/statistic', (req, res) => {
-  res.send('Not yet implemented');
-});
-router.delete('/statistic', (req, res) => {
-  res.send('Not yet implemented');
-});
+router.get('/statistic/:id', statisticController.getByIdAction);
+router.get('/statistic', statisticController.getAllAction);
+router.post('/statistic', statisticController.createAction);
+router.put('/statistic', statisticController.updateAction);
+router.delete('/statistic', statisticController.deleteAction);
 
 export default router;

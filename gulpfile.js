@@ -55,6 +55,7 @@ gulp.task("build:webview", function (callback) {
 const folders = [
     buildFolder + 'src/js',
     buildFolder + 'src/css',
+    './lib/public',
 ];
 
 gulp.task("make-folders", function () {

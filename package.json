@@ -4,11 +4,12 @@
   "description": "Brain Train R",
   "main": "lib/index.js",
   "scripts": {
-    "start": "gulp build && node .",
+    "start": "gulp build && gulp build:webview && node .",
     "test": "gulp test",
     "compile": "gulp build",
     "compile-full": "gulp build && npm run webview",
-    "webview": "gulp build:webview"
+    "webview": "gulp build:webview",
+    "exe": "node ."
   },
   "repository": {
     "type": "git",
@@ -36,13 +37,13 @@
     "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git",
     "bt-mongodb": "git+https://github.com/BrainTrainerProject/mongodb.git",
     "chai": "^3.5.0",
+    "cors": "^2.8.3",
     "express": "^4.15.2",
     "mocha": "^3.4.1",
     "mongoose": "^4.10.1",
     "morgan": "^1.8.1",
     "socket.io": "^2.0.1",
-    "underscore": "^1.8.3",
-    "cors": "^2.8.3"
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "babel-preset-latest": "^6.24.1",

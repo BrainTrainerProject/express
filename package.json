@@ -4,7 +4,7 @@
   "description": "Brain Train R",
   "main": "lib/index.js",
   "scripts": {
-    "start": "node .",
+    "start": "gulp build && node .",
     "test": "gulp test",
     "compile": "gulp build",
     "compile-full": "gulp build && npm run webview",

@@ -4,11 +4,11 @@ import setController from './controllers/set.controller';
 import profileController from './controllers/profile.controller';
 import statisticController from './controllers/statistic.controller';
 import valuationController from './controllers/valuation.controller';
-// import apiauthorization from './middleware/apiauthorization';
+import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
 
-// router.use(apiauthorization);
+router.use(apiauthorization);
 
 router.get('/notecard/:id', notecardController.getByIdAction);
 router.get('/notecard', notecardController.getAllAction);
@@ -31,13 +31,13 @@ router.delete('/profile/:id', profileController.deleteAction);
 router.get('/valuation/:id', valuationController.getByIdAction);
 router.get('/valuation', valuationController.getAllAction);
 router.post('/valuation', valuationController.createAction);
-router.put('/valuation', valuationController.updateAction);
-router.delete('/valuation', valuationController.deleteAction);
+router.put('/valuation/:id', valuationController.updateAction);
+router.delete('/valuation/:id', valuationController.deleteAction);
 
 router.get('/statistic/:id', statisticController.getByIdAction);
 router.get('/statistic', statisticController.getAllAction);
 router.post('/statistic', statisticController.createAction);
-router.put('/statistic', statisticController.updateAction);
-router.delete('/statistic', statisticController.deleteAction);
+router.put('/statistic/:id', statisticController.updateAction);
+router.delete('/statistic/:id', statisticController.deleteAction);
 
 export default router;

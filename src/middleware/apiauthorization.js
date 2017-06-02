@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
         next(new Error('No matching profile found'));
       }
 
+      req.auth0 = profile;
       next();
     });
   } else {

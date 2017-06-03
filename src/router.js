@@ -4,11 +4,11 @@ import setController from './controllers/set.controller';
 import profileController from './controllers/profile.controller';
 import statisticController from './controllers/statistic.controller';
 import valuationController from './controllers/valuation.controller';
-import apiauthorization from './middleware/apiauthorization';
+// import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
 
-router.use(apiauthorization);
+// router.use(apiauthorization);
 
 router.get('/notecard/:id', notecardController.getByIdAction);
 router.get('/notecard', notecardController.getAllAction);

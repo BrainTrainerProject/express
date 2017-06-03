@@ -25,7 +25,7 @@ app.post('/echo', (req, res) => {
 });
 
 app.use('/api', router);
-websocket(server);
+websocket.createApplication(server);
 
 dbmodels.connect(conf.mongodb, (err) => {
   if (err) {

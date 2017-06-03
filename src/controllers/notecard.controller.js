@@ -1,4 +1,5 @@
 import dbmodel from 'bt-mongodb';
+import websocket from '../websocket';
 
 function getAllAction(req, res) {
   dbmodel.notecard.findAll((err, map) => {
@@ -30,6 +31,7 @@ function createAction(req, res) {
       res.send('there was an error, please contact an admin');
     } else {
       res.send(newCard);
+      websocket.notify('new card', JSON.stringify(newCard));
     }
   });
 }

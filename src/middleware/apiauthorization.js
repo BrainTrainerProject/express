@@ -4,7 +4,8 @@ import request from 'request';
 function getProfile(token, callback) {
   request({ url: 'https://braintrainer.eu.auth0.com/userinfo', headers: { Authorization: `Bearer ${token}` } }, (error, response, body) => {
     if (!error && response.statusCode === 200) {
-      dbmodels.profile.findByOauthtoken(body.sub, (err, profile) => {
+      const bodyJson = JSON.parse(body);
+      dbmodels.profile.findByOauthtoken(bodyJson.sub, (err, profile) => {
         callback(err, profile);
       });
     } else {

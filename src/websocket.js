@@ -1,5 +1,5 @@
 import socketio from 'socket.io';
-import apiauthorization from './middleware/apiauthorization'
+import auth from './middleware/apiauthorization';
 
 let io = null;
 
@@ -14,14 +14,19 @@ function createApplication(server) {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
-    console.log(socket.request.headers.authorization);
-
-
-
-    var profile = apiauthorization.getProfile(socket.request.headers.authorization);
-
-
-
+    auth.extractTokenFromHeader(socket.request.headers, (err, token) => {
+      if (err) {
+        // TODO connection ablehnen
+      } else {
+        auth.getProfile(token, (err1, profile) => {
+          if (err1 || profile === null) {
+            console.log(err1);
+          } else {
+            console.log(profile);
+          }
+        });
+      }
+    });
 
     socket.on('message', (msg) => {
       console.log(`message: ${msg}`);

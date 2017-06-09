@@ -13,29 +13,39 @@ function getProfile(token, callback) {
   });
 }
 
-module.exports = (req, res, next) => {
-  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    const authToken = req.headers.authorization.split(' ')[1];
-
+function extractTokenFromHeader(header, callback) {
+  if (header.authorization && header.authorization.split(' ')[0] === 'Bearer') {
+    const authToken = header.authorization.split(' ')[1];
     if (authToken === undefined) {
-      next(new Error('The token is undefined'));
+      callback(new Error('The token is undefined'), null);
+    } else {
+      callback(null, authToken);
     }
-
-    module.exports.getProfile(authToken, (err, profile) => {
-      if (err) {
-        next(new Error('Error in getProfile'));
-      }
-
-      if (!profile) {
-        next(new Error('No matching profile found'));
-      }
-
-      req.auth0 = profile;
-      next();
-    });
-  } else {
-    next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
   }
+}
+
+module.exports = (req, res, next) => {
+  extractTokenFromHeader(req.headers, (err, token) => {
+    if (err) {
+      next(err);
+    } else if (token) {
+      getProfile(token, (err1, profile) => {
+        if (err1) {
+          next(new Error('Error in getProfile'));
+        }
+
+        if (!profile) {
+          next(new Error('No matching profile found'));
+        }
+
+        req.auth0 = profile;
+        next();
+      });
+    } else {
+      next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
+    }
+  });
 };
 
 module.exports.getProfile = getProfile;
+module.exports.extractTokenFromHeader = extractTokenFromHeader;

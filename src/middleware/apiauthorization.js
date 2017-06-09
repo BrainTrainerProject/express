@@ -33,14 +33,13 @@ module.exports = (req, res, next) => {
       getProfile(token, (err1, profile) => {
         if (err1) {
           next(new Error('Error in getProfile'));
-        }
-
-        if (!profile) {
+        } else if (profile === null) {
           next(new Error('No matching profile found'));
+        } else {
+          console.log(profile);
+          req.auth0 = profile;
+          next();
         }
-
-        req.auth0 = profile;
-        next();
       });
     } else {
       next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));

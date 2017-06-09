@@ -1,8 +1,11 @@
 import dbmodel from 'bt-mongodb';
 import websocket from '../websocket';
 
+// req.auth0 = profile;
 function getAllAction(req, res) {
-  dbmodel.notecard.findAll((err, map) => {
+  console.log(req.auth0);
+  console.log(req.auth0.id);
+  dbmodel.notecard.findByOwner(req.auth0.id, (err, map) => {
     if (err) {
       // error logging
       res.send('there was an error, please contact an admin');

@@ -25,7 +25,7 @@ function extractTokenFromHeader(header, callback) {
   }
 }
 
-module.exports = (req, res, next) => {
+function apiAuth(req, res, next) {
   extractTokenFromHeader(req.headers, (err, token) => {
     if (err) {
       next(err);
@@ -45,7 +45,6 @@ module.exports = (req, res, next) => {
       next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
     }
   });
-};
+}
 
-module.exports.getProfile = getProfile;
-module.exports.extractTokenFromHeader = extractTokenFromHeader;
+export default { getProfile, extractTokenFromHeader, apiAuth };

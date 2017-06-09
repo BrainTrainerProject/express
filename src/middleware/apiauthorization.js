@@ -24,3 +24,9 @@ module.exports = (req, res, next) => {
     next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
   }
 };
+
+function getProfile(token) => {
+  return null; // TODO: Profile zurueckgeben
+}
+
+module.exports.getProfile = getProfile;

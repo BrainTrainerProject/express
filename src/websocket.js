@@ -1,4 +1,5 @@
 import socketio from 'socket.io';
+import apiauthorization from './middleware/apiauthorization'
 
 let io = null;
 
@@ -13,10 +14,14 @@ function createApplication(server) {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
-    console.log(socket.request.headers);
-    setTimeout(() => {
-      notify('new card', 'message');
-    }, 4000);
+    console.log(socket.request.headers.authorization);
+
+
+
+    var profile = apiauthorization.getProfile(socket.request.headers.authorization);
+
+
+
 
     socket.on('message', (msg) => {
       console.log(`message: ${msg}`);

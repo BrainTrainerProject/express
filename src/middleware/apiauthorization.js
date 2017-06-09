@@ -1,4 +1,17 @@
 import dbmodels from 'bt-mongodb';
+import request from 'request';
+
+function getProfile(token, callback) {
+  request({ url: 'https://braintrainer.eu.auth0.com/userinfo', headers: { Authorization: `Bearer ${token}` } }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      dbmodels.profile.findByOauthtoken(body.sub, (err, profile) => {
+        callback(err, profile);
+      });
+    } else {
+      callback(new Error('blub'), null);
+    }
+  });
+}
 
 module.exports = (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
@@ -8,9 +21,9 @@ module.exports = (req, res, next) => {
       next(new Error('The token is undefined'));
     }
 
-    dbmodels.profile.findByOauthtoken(authToken, (err, profile) => {
+    module.exports.getProfile(authToken, (err, profile) => {
       if (err) {
-        next(new Error('Error in findIdByOauthtoken'));
+        next(new Error('Error in getProfile'));
       }
 
       if (!profile) {
@@ -24,9 +37,5 @@ module.exports = (req, res, next) => {
     next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
   }
 };
-
-function getProfile(token) => {
-  return null; // TODO: Profile zurueckgeben
-}
 
 module.exports.getProfile = getProfile;

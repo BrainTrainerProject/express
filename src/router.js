@@ -8,7 +8,7 @@ import valuationController from './controllers/valuation.controller';
 
 const router = express.Router();
 
-// router.use(apiauthorization);
+// router.use(apiauthorization.apiAuth);
 
 router.get('/notecard/:id', notecardController.getByIdAction);
 router.get('/notecard', notecardController.getAllAction);

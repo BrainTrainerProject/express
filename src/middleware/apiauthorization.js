@@ -38,7 +38,6 @@ function apiAuth(req, res, next) {
         } else if (profile === null) {
           next(new Error('No matching profile found'));
         } else {
-          console.log(profile);
           req.auth0 = profile;
           next();
         }

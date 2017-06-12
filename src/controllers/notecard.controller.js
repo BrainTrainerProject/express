@@ -3,8 +3,6 @@ import websocket from '../websocket';
 
 // req.auth0 = profile;
 function getAllAction(req, res) {
-  console.log(req.auth0);
-  console.log(req.auth0.id);
   dbmodel.notecard.findByOwner(req.auth0.id, (err, map) => {
     if (err) {
       // error logging
@@ -28,6 +26,7 @@ function getByIdAction(req, res) {
 
 function createAction(req, res) {
   // TODO: Aus sicherheitstechnischen Gruenden wuerde man eigentlich req.body filtern
+  // TODO: new Date() auf das Feld lastchange
   dbmodel.notecard.createNotecard(req.body, (err, newCard) => {
     if (err) {
       // error logging
@@ -40,6 +39,7 @@ function createAction(req, res) {
 }
 
 function updateAction(req, res) {
+  // TODO: new Date() auf das Feld lastchange
   dbmodel.notecard.updateNotecard(req.params.id, req.body, (err, changedCard) => {
     if (err) {
       // error logging

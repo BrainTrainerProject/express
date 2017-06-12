@@ -9,7 +9,7 @@ function getProfile(token, callback) {
         callback(err, profile);
       });
     } else {
-      callback(new Error('blub'), null);
+      callback(error, null);
     }
   });
 }
@@ -22,6 +22,8 @@ function extractTokenFromHeader(header, callback) {
     } else {
       callback(null, authToken);
     }
+  } else {
+    callback(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'), null);
   }
 }
 
@@ -32,7 +34,7 @@ function apiAuth(req, res, next) {
     } else if (token) {
       getProfile(token, (err1, profile) => {
         if (err1) {
-          next(new Error('Error in getProfile'));
+          next(err1);
         } else if (profile === null) {
           next(new Error('No matching profile found'));
         } else {
@@ -41,8 +43,6 @@ function apiAuth(req, res, next) {
           next();
         }
       });
-    } else {
-      next(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'));
     }
   });
 }

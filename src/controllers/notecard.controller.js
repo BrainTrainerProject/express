@@ -7,6 +7,8 @@ import websocket from '../websocket';
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
 const BODY_EMPTY = 'The body was empty';
 const NO_OBJECT_ID = 'There was no id in the request';
+const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
+const NOT_OWNER = 'you are not the owner of that object';
 
 function getAllAction(req, res) {
   dbmodel.notecard.findByOwner(req.auth0.id, (err, map) => {
@@ -19,7 +21,7 @@ function getAllAction(req, res) {
 }
 
 function getByIdAction(req, res) {
-  if (req.params.id === null) {
+  if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {
     dbmodel.notecard.findById(req.params.id, (err, card) => {
@@ -52,31 +54,49 @@ function createAction(req, res) {
 function updateAction(req, res) {
   if (req.body === null) {
     res.send(BODY_EMPTY);
-  } else if (req.params.id === null) {
+  } else if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {
-    req.body.lastchange = new Date();
-    dbmodel.notecard.updateNotecard(req.params.id, req.body, (err, changedCard) => {
+    dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
-        res.send(CONTACT_ADMIN);
+        res.send(NOT_EXISTED_BEFORE);
+      } else if (card.owner === req.auth0.id) {
+        req.body.lastchange = new Date();
+        dbmodel.notecard.updateNotecard(req.params.id, req.body, (err, changedCard) => {
+          if (err) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(changedCard);
+            websocket.notify('notecard_update', JSON.stringify(changedCard));
+          }
+        });
       } else {
-        res.send(changedCard);
-        websocket.notify('notecard_update', JSON.stringify(changedCard));
+        res.send(NOT_OWNER);
       }
     });
   }
 }
 
 function deleteAction(req, res) {
-  if (req.params.id === null) {
+  if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {
-    dbmodel.notecard.deleteNotecard(req.params.id, (err, result) => {
+    dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
         res.send(CONTACT_ADMIN);
       } else {
-        res.send(result);
-        websocket.notify('notecard_delete', JSON.stringify(result));
+        if (card.id === req.auth0.id) {
+          dbmodel.notecard.deleteNotecard(req.params.id, (err, result) => {
+            if (err) {
+              res.send(CONTACT_ADMIN);
+            } else {
+              res.send(result);
+              websocket.notify('notecard_delete', JSON.stringify(result));
+            }
+          });
+        } else {
+          res.send(NOT_OWNER);
+        }
       }
     });
   }

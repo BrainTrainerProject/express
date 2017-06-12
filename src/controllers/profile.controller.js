@@ -1,10 +1,15 @@
 import dbmodel from 'bt-mongodb';
 
+const CONTACT_ADMIN = 'there was an error, please contact an admin';
+const BODY_EMPTY = 'The body was empty';
+const NO_OBJECT_ID = 'There was no id in the request';
+const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
+const NOT_OWNER = 'you are not the owner of that object';
+
 function getAllAction(req, res) {
   dbmodel.profile.findAll((err, map) => {
     if (err) {
-      // error logging
-      res.send('there was an error, please contact an admin');
+      res.send(CONTACT_ADMIN);
     } else {
       res.send(map);
     }
@@ -12,10 +17,9 @@ function getAllAction(req, res) {
 }
 
 function getByIdAction(req, res) {
-  dbmodel.profile.findById(req.params.id, (err, profile) => {
+  dbmodel.profile.findById(req.auth0.id, (err, profile) => {
     if (err) {
-      // error logging
-      res.send('there was an error, please contact an admin');
+      res.send(CONTACT_ADMIN);
     } else {
       res.send(profile);
     }
@@ -23,22 +27,23 @@ function getByIdAction(req, res) {
 }
 
 function createAction(req, res) {
-  // TODO: Aus sicherheitstechnischen Gruenden wuerde man eigentlich req.body filtern
-  dbmodel.profile.createProfile(req.body, (err, newProfile) => {
-    if (err) {
-      // error logging
-      res.send('there was an error, please contact an admin');
-    } else {
-      res.send(newProfile);
-    }
-  });
+  if (req.body === null) {
+    res.send(BODY_EMPTY);
+  } else {
+    dbmodel.profile.createProfile(req.body, (err, newProfile) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else {
+        res.send(newProfile);
+      }
+    });
+  }
 }
 
 function updateAction(req, res) {
-  dbmodel.profile.updateProfile(req.params.id, req.body, (err, changedProfile) => {
+  dbmodel.profile.updateProfile(req.auth0.id, req.body, (err, changedProfile) => {
     if (err) {
-      // error logging
-      res.send('there was an error, please contact an admin');
+      res.send(CONTACT_ADMIN);
     } else {
       res.send(changedProfile);
     }
@@ -46,10 +51,9 @@ function updateAction(req, res) {
 }
 
 function deleteAction(req, res) {
-  dbmodel.profile.deleteProfile(req.params.id, (err, result) => {
+  dbmodel.profile.deleteProfile(req.auth0.id, (err, result) => {
     if (err) {
-      // error logging
-      res.send('there was an error, please contact an admin');
+      res.send(CONTACT_ADMIN);
     } else {
       res.send(result);
     }

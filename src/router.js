@@ -22,11 +22,11 @@ router.post('/set', setController.createAction);
 router.put('/set/:id', setController.updateAction);
 router.delete('/set/:id', setController.deleteAction);
 
-router.get('/profile/:id', profileController.getByIdAction);
-router.get('/profile', profileController.getAllAction);
+router.get('/profile', profileController.getByIdAction);
+// router.get('/profile', profileController.getAllAction); // Man sollte nicht alle Profile sehen koennen
 router.post('/profile', profileController.createAction);
-router.put('/profile/:id', profileController.updateAction);
-router.delete('/profile/:id', profileController.deleteAction);
+router.put('/profile', profileController.updateAction);
+router.delete('/profile', profileController.deleteAction);
 
 router.get('/valuation/:id', valuationController.getByIdAction);
 router.get('/valuation', valuationController.getAllAction);

@@ -13,6 +13,7 @@ router.use(apiauthorization.apiAuth);
 router.get('/notecard/:id', notecardController.getByIdAction);
 router.get('/notecard', notecardController.getAllAction);
 router.post('/notecard', notecardController.createAction);
+router.post('notecard/set/:id', notecardController.createAndAppendAction);
 router.put('/notecard/:id', notecardController.updateAction);
 router.delete('/notecard/:id', notecardController.deleteAction);
 

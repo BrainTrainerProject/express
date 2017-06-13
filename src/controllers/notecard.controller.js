@@ -51,6 +51,32 @@ function createAction(req, res) {
   }
 }
 
+function createAndAppendAction(req, res) {
+  if (req.params === null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else if (req.body === null) {
+    res.send(BODY_EMPTY);
+  } else {
+    dbmodel.set.findById(req.params.id, (err, set) => {
+      if (err) {
+        res.send(NOT_EXISTED_BEFORE);
+      } else {
+        req.body.owner = req.auth0.id;
+        req.body.lastchange = new Date();
+        dbmodel.notecard.createNotecard(req.body, (err, newCard) => {
+          if (err) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            // TODO karte dem set hinzufuegen
+            res.send(newCard);
+            websocket.notify('notecard_new', JSON.stringify(newCard));
+          }
+        });
+      }
+    });
+  }
+}
+
 function updateAction(req, res) {
   if (req.body === null) {
     res.send(BODY_EMPTY);
@@ -100,4 +126,11 @@ function deleteAction(req, res) {
   }
 }
 
-export default { getAllAction, getByIdAction, createAction, updateAction, deleteAction };
+export default {
+  getAllAction,
+  getByIdAction,
+  createAction,
+  updateAction,
+  deleteAction,
+  createAndAppendAction
+};

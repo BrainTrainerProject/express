@@ -100,10 +100,34 @@ function deleteAction(req, res) {
   }
 }
 
+function addCardsAction(req, res) {
+  if (req.params === null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else if (req.body === null) {
+    res.send(BODY_EMPTY);
+  } else {
+    // TODO
+    res.send('Not yet implemented');
+  }
+}
+
+function removeCardsAction(req, res) {
+  if (req.params === null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else if(req.body === null) {
+    res.send(BODY_EMPTY);
+  } else {
+    // TODO
+    res.send('Not yet implemented');
+  }
+}
+
 export default {
   getAllAction,
   getByIdAction,
   createAction,
   updateAction,
   deleteAction,
+  addCardsAction,
+  removeCardsAction,
 };

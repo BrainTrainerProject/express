@@ -22,8 +22,8 @@ router.get('/set', setController.getAllAction);
 router.post('/set', setController.createAction);
 router.put('/set/:id', setController.updateAction);
 router.delete('/set/:id', setController.deleteAction);
-router.post('/set/:id', setController.addCardsAction);
-router.post('/set/:id', setController.removeCardsAction);
+router.post('/set/:id/addCards', setController.addCardsAction);
+router.post('/set/:id/removeCards', setController.removeCardsAction);
 
 router.get('/profile', profileController.getByIdAction);
 // Man sollte nicht alle Profile sehen koennen

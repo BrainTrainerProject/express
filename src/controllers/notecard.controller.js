@@ -193,7 +193,7 @@ function createAndAppendAction(req, res) {
  * @apiName         PutNotecard
  * @apiGroup        notecard
  * @apiDescription  Updates a Notecard with the given json body.
- * Owner and the date of creation will be set automatically.
+ * Owner and the date of lastchange will be set automatically.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json

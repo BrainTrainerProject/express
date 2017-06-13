@@ -114,7 +114,7 @@ function addCardsAction(req, res) {
 function removeCardsAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
-  } else if(req.body === null) {
+  } else if (req.body === null) {
     res.send(BODY_EMPTY);
   } else {
     // TODO

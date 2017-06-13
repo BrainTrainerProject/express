@@ -1,4 +1,5 @@
 import dbmodel from 'bt-mongodb';
+import websocket from '../websocket';
 
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
 const BODY_EMPTY = 'The body was empty';

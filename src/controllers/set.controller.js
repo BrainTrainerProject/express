@@ -289,7 +289,7 @@ function addCardsAction(req, res) {
 }
 
 /**
- * @api             {post} set/:id/removeCards POST addCards
+ * @api             {post} set/:id/removeCards POST removeCards
  * @apiName         PostSetRemoveCard
  * @apiGroup        set
  * @apiDescription  Removes given cards to the set.

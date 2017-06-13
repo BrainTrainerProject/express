@@ -17,6 +17,26 @@ function getAllAction(req, res) {
   });
 }
 
+/**
+ * @api             {get} profile GET authorized profile
+ * @apiName         GetAuthorizedProfile
+ * @apiGroup        profile
+ * @apiDescription  Returns the authorized profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "email": "trololo.guy@meme.com",
+ *   "oauthtoken": "auth0|bigfatuglynumber",
+ *   "photourl": "https://s.gravatar.com/avatar/bigfatuglynumber.png",
+ *   "follower": [],
+ *   "visibility": false,
+ *   "sets": []
+ * }
+ */
 function getByIdAction(req, res) {
   dbmodel.profile.findById(req.auth0.id, (err, profile) => {
     if (err) {
@@ -61,6 +81,23 @@ function deleteAction(req, res) {
   });
 }
 
+/**
+ * @api             {post} profile/:id/follow POST ProfileFollow
+ * @apiName         PostProfileFollow
+ * @apiGroup        profile
+ * @apiDescription  Adds the authorized Profile as a follower to target Profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of target profile
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "wuppi": "fluppi"
+ * }
+ */
 function followAction(req, res) {
   if (req.params.id === null) {
     res.send(NO_OBJECT_ID);
@@ -76,6 +113,23 @@ function followAction(req, res) {
   }
 }
 
+/**
+ * @api             {post} profile/:id/follow POST ProfileUnfollow
+ * @apiName         PostProfileUnfollow
+ * @apiGroup        profile
+ * @apiDescription  Removes the authorized Profile as a follower of target Profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of target profile
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "wuppi": "fluppi"
+ * }
+ */
 function unfollowAction(req, res) {
   res.send('Not yet implemented');
   // websocket.notify('profile_follower_remove', JSON.stringify(profile));

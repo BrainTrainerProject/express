@@ -26,11 +26,10 @@ router.post('/set/:id/addCards', setController.addCardsAction);
 router.post('/set/:id/removeCards', setController.removeCardsAction);
 
 router.get('/profile', profileController.getByIdAction);
-// Man sollte nicht alle Profile sehen koennen
 // router.get('/profile', profileController.getAllAction);
-router.post('/profile', profileController.createAction);
-router.put('/profile', profileController.updateAction);
-router.delete('/profile', profileController.deleteAction);
+// router.post('/profile', profileController.createAction);
+// router.put('/profile', profileController.updateAction);
+// router.delete('/profile', profileController.deleteAction);
 router.post('/profile/:id/follow', profileController.followAction);
 router.post('/profile/:id/unfollow', profileController.unfollowAction);
 

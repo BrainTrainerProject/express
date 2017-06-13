@@ -309,6 +309,160 @@
     "groupTitle": "notecard"
   },
   {
+    "type": "get",
+    "url": "profile",
+    "title": "GET authorized profile",
+    "name": "GetAuthorizedProfile",
+    "group": "profile",
+    "description": "<p>Returns the authorized profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n{\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"follower\": [],\n  \"visibility\": false,\n  \"sets\": []\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/profile.controller.js",
+    "groupTitle": "profile"
+  },
+  {
+    "type": "post",
+    "url": "profile/:id/follow",
+    "title": "POST ProfileFollow",
+    "name": "PostProfileFollow",
+    "group": "profile",
+    "description": "<p>Adds the authorized Profile as a follower to target Profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of target profile</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n{\n  \"wuppi\": \"fluppi\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/profile.controller.js",
+    "groupTitle": "profile"
+  },
+  {
+    "type": "post",
+    "url": "profile/:id/follow",
+    "title": "POST ProfileUnfollow",
+    "name": "PostProfileUnfollow",
+    "group": "profile",
+    "description": "<p>Removes the authorized Profile as a follower of target Profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of target profile</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n{\n  \"wuppi\": \"fluppi\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/profile.controller.js",
+    "groupTitle": "profile"
+  },
+  {
     "type": "delete",
     "url": "set/:id",
     "title": "DELETE Set",
@@ -557,7 +711,7 @@
   {
     "type": "post",
     "url": "set/:id/removeCards",
-    "title": "POST addCards",
+    "title": "POST removeCards",
     "name": "PostSetRemoveCard",
     "group": "set",
     "description": "<p>Removes given cards to the set.</p>",

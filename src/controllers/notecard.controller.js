@@ -62,8 +62,8 @@ function updateAction(req, res) {
         res.send(NOT_EXISTED_BEFORE);
       } else if (card.owner === req.auth0.id) {
         req.body.lastchange = new Date();
-        dbmodel.notecard.updateNotecard(req.params.id, req.body, (err, changedCard) => {
-          if (err) {
+        dbmodel.notecard.updateNotecard(req.params.id, req.body, (err1, changedCard) => {
+          if (err1) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(changedCard);
@@ -84,19 +84,17 @@ function deleteAction(req, res) {
     dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
         res.send(CONTACT_ADMIN);
+      } else if (card.id === req.auth0.id) {
+        dbmodel.notecard.deleteNotecard(req.params.id, (err1, result) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(result);
+            websocket.notify('notecard_delete', JSON.stringify(result));
+          }
+        });
       } else {
-        if (card.id === req.auth0.id) {
-          dbmodel.notecard.deleteNotecard(req.params.id, (err, result) => {
-            if (err) {
-              res.send(CONTACT_ADMIN);
-            } else {
-              res.send(result);
-              websocket.notify('notecard_delete', JSON.stringify(result));
-            }
-          });
-        } else {
-          res.send(NOT_OWNER);
-        }
+        res.send(NOT_OWNER);
       }
     });
   }

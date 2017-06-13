@@ -45,6 +45,7 @@ function createAction(req, res) {
         res.send(CONTACT_ADMIN);
       } else {
         res.send(newSet);
+        websocket.notify('set_new', JSON.stringify(newSet));
       }
     });
   }
@@ -54,18 +55,19 @@ function updateAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else if (req.body === null) {
-    res.send(BODY_EMPTY)
+    res.send(BODY_EMPTY);
   } else {
     dbmodel.set.getByIdAction(req.params.id, (err, set) => {
       if (err) {
         res.send(NOT_EXISTED_BEFORE);
       } else if (set.owner === req.auth0.id) {
         req.body.lastchange = new Date();
-        dbmodel.set.updateSet(req.params.id, req.body, (err, changedSet) => {
-          if (err) {
+        dbmodel.set.updateSet(req.params.id, req.body, (err1, changedSet) => {
+          if (err1) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(changedSet);
+            websocket.notify('set_update', JSON.stringify(changedSet));
           }
         });
       } else {
@@ -83,11 +85,12 @@ function deleteAction(req, res) {
       if (err) {
         res.send(CONTACT_ADMIN);
       } else if (set.owner === req.auth0.id) {
-        dbmodel.set.deleteSet(req.params.id, (err, result) => {
-          if (err) {
+        dbmodel.set.deleteSet(req.params.id, (err1, result) => {
+          if (err1) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
+            websocket.notify('set_delete', JSON.stringify(result));
           }
         });
       } else {
@@ -97,4 +100,10 @@ function deleteAction(req, res) {
   }
 }
 
-export default { getAllAction, getByIdAction, createAction, updateAction, deleteAction };
+export default {
+  getAllAction,
+  getByIdAction,
+  createAction,
+  updateAction,
+  deleteAction,
+};

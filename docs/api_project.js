@@ -1,4 +1,4 @@
-{
+define({
   "title": "Custom apiDoc browser title",
   "url": "/api/",
   "name": "braintrainer",
@@ -9,8 +9,8 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2017-06-13T17:59:54.944Z",
+    "time": "2017-06-13T18:16:10.968Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
-}
+});

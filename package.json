@@ -10,7 +10,7 @@
     "compile-full": "gulp build && npm run webview",
     "webview": "gulp build:webview",
     "exe": "node .",
-    "generate-api-doc": "apidoc -i src/ -o apidoc/"
+    "generate-api-doc": "apidoc -i src/ -o docs/"
   },
   "repository": {
     "type": "git",

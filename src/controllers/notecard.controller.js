@@ -10,6 +10,39 @@ const NO_OBJECT_ID = 'There was no id in the request';
 const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
 const NOT_OWNER = 'you are not the owner of that object';
 
+/**
+ * @api             {get} notecard GET owned Notecards
+ * @apiName         GetAllNotecards
+ * @apiGroup        notecard
+ * @apiDescription  Collects all the notecards of which the authorizated profile
+ * has access to and returns them in a json response.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "593eaebcf8ac692c4c13b2c1": {
+ *     "_id": "593eaebcf8ac692c4c13b2c1",
+ *     "title": "Lorem Ipsum",
+ *     "task": "Dolor Sit",
+ *     "answer": "Ahmet",
+ *     "owner": "593eaa0bcf7f5000011c24c4",
+ *     "lastchange": "2017-06-12T15:58:37.406Z",
+ *     "__v": 0
+ *   },
+ *   "593eba2d2de774329cfc492d": {
+ *   "_id": "593eba2d2de774329cfc492d",
+ *   "title": "Lorem Ipsum wuppi",
+ *   "task": "Dolor Sit fluppi",
+ *   "answer": "Ahmet",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-12T15:58:37.406Z",
+ *   "__v": 0
+ *   }
+ * }
+ */
 function getAllAction(req, res) {
   dbmodel.notecard.findByOwner(req.auth0.id, (err, map) => {
     if (err) {
@@ -20,6 +53,27 @@ function getAllAction(req, res) {
   });
 }
 
+/**
+ * @api             {get} notecard/:id GET specific Notecard
+ * @apiName         GetSpecificNotecards
+ * @apiGroup        notecard
+ * @apiDescription  Returns the Notecard with the given id.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} id id of the notecard
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "_id": "593eaebcf8ac692c4c13b2c1",
+ *   "title": "Lorem Ipsum",
+ *   "task": "Dolor Sit",
+ *   "answer": "Ahmet",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "__v": 0
+ * }
+ */
 function getByIdAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
@@ -34,6 +88,37 @@ function getByIdAction(req, res) {
   }
 }
 
+/**
+ * @api             {post} notecard POST Notecard
+ * @apiName         PostNotecard
+ * @apiGroup        notecard
+ * @apiDescription  Creates a Notecard of the given json body.
+ * Owner and the date of creation will be set automatically.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * Content-Type: application/json
+ * {
+ *   "title": "Lorem Ipsum",
+ *   "task": "Dolor Sit",
+ *   "answer": "Ahmet"
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "__v": 0,
+ *   "title": "Lorem Ipsum",
+ *   "task": "Dolor Sit",
+ *   "answer": "Ahmet",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T17:08:53.703Z",
+ *   "_id": "59401c25b5746212889f54f9"
+ * }
+ */
 function createAction(req, res) {
   if (req.body === null) {
     res.send(BODY_EMPTY);
@@ -51,20 +136,45 @@ function createAction(req, res) {
   }
 }
 
+/**
+ * @api             {post} notecard/set/:id POST Notecard and Append to Set
+ * @apiName         PostNotecardAppend
+ * @apiGroup        notecard
+ * @apiDescription  Creates a Notecard of the given json body.
+ * Owner and the date of creation will be set automatically. It will be appended
+ * to the Set of the given id.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} id id of the Set on which the newly created
+ * Notecard will be appended to.
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * Content-Type: application/json
+ * {
+ *  "bla": "bla"
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *  "wuppi": "fluppi"
+ * }
+ */
 function createAndAppendAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else if (req.body === null) {
     res.send(BODY_EMPTY);
   } else {
-    dbmodel.set.findById(req.params.id, (err, set) => {
+    /* dbmodel.set.findById(req.params.id, (err, set) => {
       if (err) {
         res.send(NOT_EXISTED_BEFORE);
       } else {
         req.body.owner = req.auth0.id;
         req.body.lastchange = new Date();
-        dbmodel.notecard.createNotecard(req.body, (err, newCard) => {
-          if (err) {
+        dbmodel.notecard.createNotecard(req.body, (err1, newCard) => {
+          if (err1) {
             res.send(CONTACT_ADMIN);
           } else {
             // TODO karte dem set hinzufuegen
@@ -73,10 +183,44 @@ function createAndAppendAction(req, res) {
           }
         });
       }
-    });
+    });*/
+    res.send('Not yet implemented');
   }
 }
 
+/**
+ * @api             {put} notecard/:id PUT Notecard
+ * @apiName         PutNotecard
+ * @apiGroup        notecard
+ * @apiDescription  Updates a Notecard with the given json body.
+ * Owner and the date of creation will be set automatically.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of the Notecard which will be updated
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * Content-Type: application/json
+ * {
+ *   "title": "Lorem Ipsum1",
+ *   "task": "Dolor Sit2",
+ *   "answer": "Ahmet3",
+ *   "owner": "593eaa0bcf7f5000011c24c4"
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "_id": "59401de1b5746212889f54fa",
+ *   "title": "Lorem Ipsum1",
+ *   "task": "Dolor Sit2",
+ *   "answer": "Ahmet3",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T17:47:22.826Z",
+ *   __v": 0
+ * }
+ */
 function updateAction(req, res) {
   if (req.body === null) {
     res.send(BODY_EMPTY);
@@ -86,7 +230,7 @@ function updateAction(req, res) {
     dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
         res.send(NOT_EXISTED_BEFORE);
-      } else if (card.owner === req.auth0.id) {
+      } else if (card.owner.toString() === req.auth0.id) {
         req.body.lastchange = new Date();
         dbmodel.notecard.updateNotecard(req.params.id, req.body, (err1, changedCard) => {
           if (err1) {
@@ -103,6 +247,27 @@ function updateAction(req, res) {
   }
 }
 
+/**
+ * @api             {delete} notecard/:id DELETE Notecard
+ * @apiName         DeleteNotecard
+ * @apiGroup        notecard
+ * @apiDescription  Deletes a Notecard.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} id id of the Notecard which will be deleted
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * {
+ *   "_id": "59401de1b5746212889f54fa",
+ *   "title": "Lorem Ipsum1",
+ *   "task": "Dolor Sit2",
+ *   "answer": "Ahmet3",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T17:47:22.826Z",
+ *   "__v": 0
+ * }
+ */
 function deleteAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
@@ -110,7 +275,7 @@ function deleteAction(req, res) {
     dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
         res.send(CONTACT_ADMIN);
-      } else if (card.id === req.auth0.id) {
+      } else if (card.owner.toString() === req.auth0.id) {
         dbmodel.notecard.deleteNotecard(req.params.id, (err1, result) => {
           if (err1) {
             res.send(CONTACT_ADMIN);
@@ -132,5 +297,5 @@ export default {
   createAction,
   updateAction,
   deleteAction,
-  createAndAppendAction
+  createAndAppendAction,
 };

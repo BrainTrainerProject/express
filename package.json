@@ -9,7 +9,8 @@
     "compile": "gulp build",
     "compile-full": "gulp build && npm run webview",
     "webview": "gulp build:webview",
-    "exe": "node ."
+    "exe": "node .",
+    "generate-api-doc": "apidoc -i src/ -o apidoc/"
   },
   "repository": {
     "type": "git",
@@ -67,5 +68,9 @@
     "gulp-typescript": "^3.1.7",
     "run-sequence": "^1.2.2",
     "typescript": "^2.3.3"
+  },
+  "apidoc": {
+    "title": "Custom apiDoc browser title",
+    "url": "/api/"
   }
 }

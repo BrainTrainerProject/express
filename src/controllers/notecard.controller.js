@@ -1,4 +1,5 @@
 import dbmodel from 'bt-mongodb';
+import activityController from './activity.controller';
 import websocket from '../websocket';
 
 // Man kommt nur soweit, wenn man sich authorisiert *hat*. daher wird hier nie
@@ -94,6 +95,7 @@ function getByIdAction(req, res) {
  * @apiGroup        notecard
  * @apiDescription  Creates a Notecard of the given json body.
  * Owner and the date of creation will be set automatically.
+ * Emits the notecard_new event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -130,7 +132,7 @@ function createAction(req, res) {
         res.send(CONTACT_ADMIN);
       } else {
         res.send(newCard);
-        websocket.notify('notecard_new', JSON.stringify(newCard));
+        activityController.createActivityForFollower(req.auth0, 'notecard_new');
       }
     });
   }
@@ -143,6 +145,7 @@ function createAction(req, res) {
  * @apiDescription  Creates a Notecard of the given json body.
  * Owner and the date of creation will be set automatically. It will be appended
  * to the Set of the given id.
+ * Emits the notecard_new event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiParam        {Number} id id of the Set on which the newly created
@@ -194,6 +197,7 @@ function createAndAppendAction(req, res) {
  * @apiGroup        notecard
  * @apiDescription  Updates a Notecard with the given json body.
  * Owner and the date of lastchange will be set automatically.
+ * Emits the notecard_update event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -237,7 +241,7 @@ function updateAction(req, res) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(changedCard);
-            websocket.notify('notecard_update', JSON.stringify(changedCard));
+            activityController.createActivityForFollower(req.auth0, 'notecard_update');
           }
         });
       } else {
@@ -252,6 +256,7 @@ function updateAction(req, res) {
  * @apiName         DeleteNotecard
  * @apiGroup        notecard
  * @apiDescription  Deletes a Notecard.
+ * Emits the notecard_delete event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiParam        {Number} id id of the Notecard which will be deleted
@@ -281,7 +286,7 @@ function deleteAction(req, res) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
-            websocket.notify('notecard_delete', JSON.stringify(result));
+            activityController.createActivityForFollower(req.auth0, 'notecard_delete');
           }
         });
       } else {

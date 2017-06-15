@@ -93,6 +93,7 @@ function getByIdAction(req, res) {
  * @apiGroup        set
  * @apiDescription  Creates a Set of the given json body.
  * Owner and the date of creation will be set automatically.
+ * Emits the set_new event on the websocket for follower
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -149,6 +150,7 @@ function createAction(req, res) {
  * @apiGroup        set
  * @apiDescription  Updates a Set with the given json body.
  * Owner and the date of lastchange will be set automatically.
+ * Emits the set_update event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -214,6 +216,7 @@ function updateAction(req, res) {
  * @apiName         DeleteSet
  * @apiGroup        set
  * @apiDescription  Deletes a Set.
+ * Emits the set_delete event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiParam        {Number} id id of the Set which will be deleted
@@ -262,6 +265,7 @@ function deleteAction(req, res) {
  * @apiName         PostSetAddCard
  * @apiGroup        set
  * @apiDescription  Adds given cards to the set.
+ * Emits the set_update event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -306,10 +310,10 @@ function addCardsAction(req, res) {
       } else if (set.owner.toString() === req.auth0.id) {
         dbmodel.set.addNotecards(req.params.id, req.body.notecards, (err1, result) => {
           if (err1) {
-            console.log(err1);
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
+            activityController.createActivityForFollower(req.auth0, 'set_update');
           }
         });
       } else {
@@ -324,6 +328,7 @@ function addCardsAction(req, res) {
  * @apiName         PostSetRemoveCard
  * @apiGroup        set
  * @apiDescription  Removes given cards to the set.
+ * Emits the set_update event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
@@ -371,6 +376,7 @@ function removeCardsAction(req, res) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
+            activityController.createActivityForFollower(req.auth0, 'set_update');
           }
         });
       } else {

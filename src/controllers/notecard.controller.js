@@ -1,6 +1,5 @@
 import dbmodel from 'bt-mongodb';
 import activityController from './activity.controller';
-import websocket from '../websocket';
 
 // Man kommt nur soweit, wenn man sich authorisiert *hat*. daher wird hier nie
 // auf req.auth0.id geprueft.
@@ -155,13 +154,21 @@ function createAction(req, res) {
  * @apiSuccessExample {json} Request
  * Content-Type: application/json
  * {
- *  "bla": "bla"
+ *   "title": "Lorem Ipsum",
+ *   "task": "Dolor Sit",
+ *   "answer": "Ahmet"
  * }
  *
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
  * {
- *  "wuppi": "fluppi"
+ *   "__v": 0,
+ *   "title": "Lorem Ipsum",
+ *   "task": "Dolor Sit",
+ *   "answer": "Ahmet",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T17:08:53.703Z",
+ *   "_id": "59401c25b5746212889f54f9"
  * }
  */
 function createAndAppendAction(req, res) {
@@ -170,23 +177,28 @@ function createAndAppendAction(req, res) {
   } else if (req.body === null) {
     res.send(BODY_EMPTY);
   } else {
-    /* dbmodel.set.findById(req.params.id, (err, set) => {
+    dbmodel.set.findById(req.params.id, (err, set) => {
       if (err) {
         res.send(NOT_EXISTED_BEFORE);
-      } else {
+      } else if (set) {
         req.body.owner = req.auth0.id;
         req.body.lastchange = new Date();
         dbmodel.notecard.createNotecard(req.body, (err1, newCard) => {
           if (err1) {
             res.send(CONTACT_ADMIN);
-          } else {
-            // TODO karte dem set hinzufuegen
-            res.send(newCard);
-            websocket.notify('notecard_new', JSON.stringify(newCard));
+          } else if (newCard) {
+            dbmodel.set.addNotecards(req.params.id, [newCard.id], (err2) => {
+              if (err2) {
+                res.send(CONTACT_ADMIN);
+              } else {
+                res.send(newCard);
+                activityController.createActivityForFollower(req.auth0, 'notecard_new');
+              }
+            });
           }
         });
       }
-    });*/
+    });
     res.send('Not yet implemented');
   }
 }

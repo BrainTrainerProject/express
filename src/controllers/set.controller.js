@@ -5,7 +5,7 @@ import websocket from '../websocket';
 // auf req.auth0.id geprueft.
 
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
-const BODY_EMPTY = 'The body was empty';
+const BODY_EMPTY = 'The body was empty or not fitting';
 const NO_OBJECT_ID = 'There was no id in the request';
 const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
 const NOT_OWNER = 'you are not the owner of that object';
@@ -264,31 +264,49 @@ function deleteAction(req, res) {
  * @apiDescription  Adds given cards to the set.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
  * @apiParam        {Number} id id of the Set on which the cards will be added
  * @apiPermission   AuthToken
  *
  * @apiSuccessExample {json} Request
  * {
- *   "notecard": [ "593eaebcf8ac692c4c13b2c1",... ]
+ *   "notecards": [ "59425ee05ee41e268c9dec3c",... ]
  * }
  *
  * @apiSuccessExample {json} Response 200
  * {
- *   "wuppi": "fluppi"
+ *   "_id": "59425f345ee41e268c9dec3d",
+ *   "owner": "59425e658878750001a42a78",
+ *   "lastchange": "2017-06-15T10:19:32.904Z",
+ *   "visibility": true,
+ *   "photourl": "",
+ *   "title": "Never gonna give you up",
+ *   "description": "Never gonna let you down",
+ *   "__v": 0,
+ *   "valuations": [],
+ *   "tags": [
+ *     "wuppi",
+ *     "fluppi"
+ *   ],
+ *   "notecard": [
+ *     "59425eda5ee41e268c9dec3a",
+ *     "59425ee05ee41e268c9dec3c"
+ *   ]
  * }
  */
 function addCardsAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
-  } else if (req.body === null || req.body.notecard === null) {
+  } else if (req.body === null || req.body.notecards === undefined) {
     res.send(BODY_EMPTY);
   } else {
     dbmodel.set.findById(req.params.id, (err, set) => {
       if (err) {
         res.send(CONTACT_ADMIN);
       } else if (set.owner.toString() === req.auth0.id) {
-        dbmodel.set.addNotecards(req.params.id, req.body.notecard, (err1, result) => {
+        dbmodel.set.addNotecards(req.params.id, req.body.notecards, (err1, result) => {
           if (err1) {
+            console.log(err1);
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
@@ -308,30 +326,47 @@ function addCardsAction(req, res) {
  * @apiDescription  Removes given cards to the set.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
  * @apiParam        {Number} id id of the Set on which the cards will be removed
  * @apiPermission   AuthToken
  *
  * @apiSuccessExample {json} Request
  * {
- *   "notecard": [ "593eaebcf8ac692c4c13b2c1",... ]
+ *   "notecards": [ "593eaebcf8ac692c4c13b2c1",... ]
  * }
  *
  * @apiSuccessExample {json} Response 200
  * {
- *   "wuppi": "fluppi"
+ *   "_id": "59425f345ee41e268c9dec3d",
+ *   "owner": "59425e658878750001a42a78",
+ *   "lastchange": "2017-06-15T10:19:32.904Z",
+ *   "visibility": true,
+ *   "photourl": "",
+ *   "title": "Never gonna give you up",
+ *   "description": "Never gonna let you down",
+ *   "__v": 0,
+ *   "valuations": [],
+ *   "tags": [
+ *     "wuppi",
+ *     "fluppi"
+ *   ],
+ *   "notecard": [
+ *     "59425eda5ee41e268c9dec3a",
+ *     "59425ee05ee41e268c9dec3c"
+ *   ]
  * }
  */
 function removeCardsAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
-  } else if (req.body === null) {
+  } else if (req.body === null || req.body.notecards === undefined) {
     res.send(BODY_EMPTY);
   } else {
     dbmodel.set.findById(req.params.id, (err, set) => {
       if (err) {
         res.send(CONTACT_ADMIN);
       } else if (set.owner.toString() === req.auth0.id) {
-        dbmodel.set.removeNotecards(req.params.id, req.body.notecard, (err1, result) => {
+        dbmodel.set.removeNotecards(req.params.id, req.body.notecards, (err1, result) => {
           if (err1) {
             res.send(CONTACT_ADMIN);
           } else {

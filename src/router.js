@@ -4,6 +4,7 @@ import setController from './controllers/set.controller';
 import profileController from './controllers/profile.controller';
 import statisticController from './controllers/statistic.controller';
 import valuationController from './controllers/valuation.controller';
+import activityController from './controllers/activity.controller';
 import apiauthorization from './middleware/apiauthorization';
 
 const router = express.Router();
@@ -44,5 +45,7 @@ router.get('/statistic', statisticController.getAllAction);
 router.post('/statistic', statisticController.createAction);
 router.put('/statistic/:id', statisticController.updateAction);
 router.delete('/statistic/:id', statisticController.deleteAction);
+
+router.get('/activity/:page', activityController.pageActivityAction);
 
 export default router;

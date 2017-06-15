@@ -280,11 +280,24 @@ function deleteAction(req, res) {
 function addCardsAction(req, res) {
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
-  } else if (req.body === null) {
+  } else if (req.body === null || req.body.notecard === null) {
     res.send(BODY_EMPTY);
   } else {
-    // TODO
-    res.send('Not yet implemented');
+    dbmodel.set.findById(req.params.id, (err, set) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else if (set.owner.toString() === req.auth0.id) {
+        dbmodel.set.addNotecards(req.params.id, req.body.notecard, (err1, result) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(result);
+          }
+        });
+      } else {
+        res.send(NOT_OWNER);
+      }
+    });
   }
 }
 
@@ -314,8 +327,21 @@ function removeCardsAction(req, res) {
   } else if (req.body === null) {
     res.send(BODY_EMPTY);
   } else {
-    // TODO
-    res.send('Not yet implemented');
+    dbmodel.set.findById(req.params.id, (err, set) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else if (set.owner.toString() === req.auth0.id) {
+        dbmodel.set.removeNotecards(req.params.id, req.body.notecard, (err1, result) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(result);
+          }
+        });
+      } else {
+        res.send(NOT_OWNER);
+      }
+    });
   }
 }
 

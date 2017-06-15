@@ -102,7 +102,7 @@ function followAction(req, res) {
   if (req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {
-    dbmodel.profile.addfollower(req.params.id, req.auth0.id, (err, profile) => {
+    dbmodel.profile.addFollower(req.params.id, [req.auth0.id], (err, profile) => {
       if (err) {
         res.send(err);
       } else {
@@ -131,8 +131,18 @@ function followAction(req, res) {
  * }
  */
 function unfollowAction(req, res) {
-  res.send('Not yet implemented');
-  // websocket.notify('profile_follower_remove', JSON.stringify(profile));
+  if (req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else {
+    dbmodel.profile.addFollower(req.params.id, [req.auth0.id], (err, profile) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(profile);
+        websocket.notify('profile_follower_add', JSON.stringify(profile));
+      }
+    });
+  }
 }
 
 export default {

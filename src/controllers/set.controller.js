@@ -1,5 +1,5 @@
 import dbmodel from 'bt-mongodb';
-import websocket from '../websocket';
+import activityController from './activity.controller';
 
 // Man kommt nur soweit, wenn man sich authorisiert *hat*. daher wird hier nie
 // auf req.auth0.id geprueft.
@@ -137,7 +137,7 @@ function createAction(req, res) {
         res.send(CONTACT_ADMIN);
       } else {
         res.send(newSet);
-        websocket.notify('set_new', JSON.stringify(newSet));
+        activityController.createActivityForFollower(req.auth0, 'set_new');
       }
     });
   }
@@ -199,7 +199,7 @@ function updateAction(req, res) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(changedSet);
-            websocket.notify('set_update', JSON.stringify(changedSet));
+            activityController.createActivityForFollower(req.auth0, 'set_update');
           }
         });
       } else {
@@ -247,7 +247,7 @@ function deleteAction(req, res) {
             res.send(CONTACT_ADMIN);
           } else {
             res.send(result);
-            websocket.notify('set_delete', JSON.stringify(result));
+            activityController.createActivityForFollower(req.auth0, 'set_delete');
           }
         });
       } else {

@@ -4,9 +4,16 @@ import auth from './middleware/apiauthorization';
 let io = null;
 const users = [];
 
-function notify(protocol, message) {
+function notify(sender, activity) {
   if (io) {
-    io.emit(protocol, message);
+    for (let i = 0; i < sender.follower.length; i += 1) {
+      for (let j = 0; j < users.length; j += 1) {
+        if (sender.follower[i].toString() === users[j].profile.id.toString()) {
+          users[j].socket.emit(activity.activityType, activity.toString());
+          break;
+        }
+      }
+    }
   }
 }
 

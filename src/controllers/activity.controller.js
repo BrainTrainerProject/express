@@ -2,8 +2,13 @@ import dbmodel from 'bt-mongodb';
 import websocket from '../websocket';
 
 function pageActivityAction(req, res) {
-  // dbmodel.tuwastolles
-  res.send('Not yer implemented');
+  dbmodel.activity.findByOwner(req.auth0.id, req.params.page, 5, (err, activities) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(activities);
+    }
+  });
 }
 
 function createActivityForFollower(creator, type) {

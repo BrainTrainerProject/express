@@ -1,8 +1,30 @@
 import dbmodel from 'bt-mongodb';
 import websocket from '../websocket';
 
+/**
+ * @api             {get} notecard GET activities
+ * @apiName         GetPagewiseActivities
+ * @apiGroup        activity
+ * @apiDescription  Collects all the activities of the page with an offset of 10
+ * entries.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   {
+ *     "_id": "594282b35b08b83670439abd",
+ *     "owner": "5942637d16560b00013afd9d",
+ *     "sender": "59425e658878750001a42a78",
+ *     "activityType": "set_new",
+ *     "__v": 0
+ *   },...
+ * ]
+ */
 function pageActivityAction(req, res) {
-  dbmodel.activity.findByOwner(req.auth0.id, req.params.page, 5, (err, activities) => {
+  dbmodel.activity.findByOwner(req.auth0.id, req.params.page, 10, (err, activities) => {
     if (err) {
       res.send(err);
     } else {

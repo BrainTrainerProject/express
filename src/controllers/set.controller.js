@@ -386,6 +386,134 @@ function removeCardsAction(req, res) {
   }
 }
 
+/**
+ * @api             {post} set/:id/addTags POST addTags
+ * @apiName         PostSetAddTag
+ * @apiGroup        set
+ * @apiDescription  Adds given tagss to the set.
+ * Emits the set_update event on the websocket for follower.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of the Set on which the cards will be added
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * {
+ *   "tags": [ "duppi",... ]
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * {
+ *   "_id": "59425f345ee41e268c9dec3d",
+ *   "owner": "59425e658878750001a42a78",
+ *   "lastchange": "2017-06-15T10:19:32.904Z",
+ *   "visibility": true,
+ *   "photourl": "",
+ *   "title": "Never gonna give you up",
+ *   "description": "Never gonna let you down",
+ *   "__v": 0,
+ *   "valuations": [],
+ *   "tags": [
+ *     "wuppi",
+ *     "fluppi",
+ *     "duppi"
+ *   ],
+ *   "notecard": [
+ *     "59425eda5ee41e268c9dec3a",
+ *     "59425ee05ee41e268c9dec3c"
+ *   ]
+ * }
+ */
+function addTagsAction(req, res) {
+  if (req.params === null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else if (req.body === null || req.body.tags === undefined) {
+    res.send(BODY_EMPTY);
+  } else {
+    dbmodel.set.findById(req.params.id, (err, set) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else if (set.owner.toString() === req.auth0.id) {
+        dbmodel.set.addTags(req.params.id, req.body.tags, (err1, changedSet) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(changedSet);
+            activityController.createActivityForFollower(req.auth0, 'set_update');
+          }
+        });
+      } else {
+        res.send(NOT_OWNER);
+      }
+    });
+  }
+}
+
+/**
+ * @api             {post} set/:id/removeTags POST removeTags
+ * @apiName         PostSetRemoveTag
+ * @apiGroup        set
+ * @apiDescription  Removes given tags of the set.
+ * Emits the set_update event on the websocket for follower.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of the Set on which the tags will be removed
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * {
+ *   "tags": [ "duppi",... ]
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * {
+ *   "_id": "59425f345ee41e268c9dec3d",
+ *   "owner": "59425e658878750001a42a78",
+ *   "lastchange": "2017-06-15T10:19:32.904Z",
+ *   "visibility": true,
+ *   "photourl": "",
+ *   "title": "Never gonna give you up",
+ *   "description": "Never gonna let you down",
+ *   "__v": 0,
+ *   "valuations": [],
+ *   "tags": [
+ *     "wuppi",
+ *     "fluppi",
+ *     "duppi"
+ *   ],
+ *   "notecard": [
+ *     "59425eda5ee41e268c9dec3a",
+ *     "59425ee05ee41e268c9dec3c"
+ *   ]
+ * }
+ */
+function removeTagsAction(req, res) {
+  if (req.params === null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else if (req.body === null || req.body.tags === undefined) {
+    res.send(BODY_EMPTY);
+  } else {
+    dbmodel.set.findById(req.params.id, (err, set) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else if (set.owner.toString() === req.auth0.id) {
+        dbmodel.set.removeTags(req.params.id, req.body.tags, (err1, changedSet) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(changedSet);
+            activityController.createActivityForFollower(req.auth0, 'set_update');
+          }
+        });
+      } else {
+        res.send(NOT_OWNER);
+      }
+    });
+  }
+}
+
 export default {
   getAllAction,
   getByIdAction,
@@ -394,4 +522,6 @@ export default {
   deleteAction,
   addCardsAction,
   removeCardsAction,
+  addTagsAction,
+  removeTagsAction,
 };

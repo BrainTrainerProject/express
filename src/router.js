@@ -25,6 +25,8 @@ router.put('/set/:id', setController.updateAction);
 router.delete('/set/:id', setController.deleteAction);
 router.post('/set/:id/addCards', setController.addCardsAction);
 router.post('/set/:id/removeCards', setController.removeCardsAction);
+router.post('/set/:id/addTags', setController.addTagsAction);
+router.post('/set/:id/removeTags', setController.removeTagsAction);
 
 router.get('/profile', profileController.getByIdAction);
 // router.get('/profile', profileController.getAllAction);

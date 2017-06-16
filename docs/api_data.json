@@ -1,5 +1,43 @@
 [
   {
+    "type": "get",
+    "url": "notecard",
+    "title": "GET activities",
+    "name": "GetPagewiseActivities",
+    "group": "activity",
+    "description": "<p>Collects all the activities of the page with an offset of 10 entries.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": \"5942637d16560b00013afd9d\",\n    \"sender\": \"59425e658878750001a42a78\",\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/activity.controller.js",
+    "groupTitle": "activity"
+  },
+  {
     "type": "delete",
     "url": "notecard/:id",
     "title": "DELETE Notecard",
@@ -717,6 +755,69 @@
   },
   {
     "type": "post",
+    "url": "set/:id/addTags",
+    "title": "POST addTags",
+    "name": "PostSetAddTag",
+    "group": "set",
+    "description": "<p>Adds given tagss to the set. Emits the set_update event on the websocket for follower.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the Set on which the cards will be added</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Request",
+          "content": "{\n  \"tags\": [ \"duppi\",... ]\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response 200",
+          "content": "{\n  \"_id\": \"59425f345ee41e268c9dec3d\",\n  \"owner\": \"59425e658878750001a42a78\",\n  \"lastchange\": \"2017-06-15T10:19:32.904Z\",\n  \"visibility\": true,\n  \"photourl\": \"\",\n  \"title\": \"Never gonna give you up\",\n  \"description\": \"Never gonna let you down\",\n  \"__v\": 0,\n  \"valuations\": [],\n  \"tags\": [\n    \"wuppi\",\n    \"fluppi\",\n    \"duppi\"\n  ],\n  \"notecard\": [\n    \"59425eda5ee41e268c9dec3a\",\n    \"59425ee05ee41e268c9dec3c\"\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/set.controller.js",
+    "groupTitle": "set"
+  },
+  {
+    "type": "post",
     "url": "set/:id/removeCards",
     "title": "POST removeCards",
     "name": "PostSetRemoveCard",
@@ -770,6 +871,69 @@
         {
           "title": "Response 200",
           "content": "{\n  \"_id\": \"59425f345ee41e268c9dec3d\",\n  \"owner\": \"59425e658878750001a42a78\",\n  \"lastchange\": \"2017-06-15T10:19:32.904Z\",\n  \"visibility\": true,\n  \"photourl\": \"\",\n  \"title\": \"Never gonna give you up\",\n  \"description\": \"Never gonna let you down\",\n  \"__v\": 0,\n  \"valuations\": [],\n  \"tags\": [\n    \"wuppi\",\n    \"fluppi\"\n  ],\n  \"notecard\": [\n    \"59425eda5ee41e268c9dec3a\",\n    \"59425ee05ee41e268c9dec3c\"\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/set.controller.js",
+    "groupTitle": "set"
+  },
+  {
+    "type": "post",
+    "url": "set/:id/removeTags",
+    "title": "POST removeTags",
+    "name": "PostSetRemoveTag",
+    "group": "set",
+    "description": "<p>Removes given tags of the set. Emits the set_update event on the websocket for follower.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the Set on which the tags will be removed</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Request",
+          "content": "{\n  \"tags\": [ \"duppi\",... ]\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response 200",
+          "content": "{\n  \"_id\": \"59425f345ee41e268c9dec3d\",\n  \"owner\": \"59425e658878750001a42a78\",\n  \"lastchange\": \"2017-06-15T10:19:32.904Z\",\n  \"visibility\": true,\n  \"photourl\": \"\",\n  \"title\": \"Never gonna give you up\",\n  \"description\": \"Never gonna let you down\",\n  \"__v\": 0,\n  \"valuations\": [],\n  \"tags\": [\n    \"wuppi\",\n    \"fluppi\",\n    \"duppi\"\n  ],\n  \"notecard\": [\n    \"59425eda5ee41e268c9dec3a\",\n    \"59425ee05ee41e268c9dec3c\"\n  ]\n}",
           "type": "json"
         }
       ]

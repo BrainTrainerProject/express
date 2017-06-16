@@ -1,17 +1,29 @@
 import dbmodels from 'bt-mongodb';
-import request from 'request';
+import jsonwebtoken from 'jsonwebtoken';
+
+const conf = require('./../config.json');
+
+function validateJWT(token) {
+  try {
+    return jsonwebtoken.decode(token, conf.auth0.clientSecret, {
+      algorithms: ['HS256'],
+      audience: conf.auth0.clientId,
+      issuer: `https://${conf.auth0.domain}/` });
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+}
 
 function getProfile(token, callback) {
-  request({ url: 'https://braintrainer.eu.auth0.com/userinfo', headers: { Authorization: `Bearer ${token}` } }, (error, response, body) => {
-    if (!error && response.statusCode === 200) {
-      const bodyJson = JSON.parse(body);
-      dbmodels.profile.findByOauthtoken(bodyJson.sub, (err, profile) => {
-        callback(err, profile);
-      });
-    } else {
-      callback(error, null);
-    }
-  });
+  const payloadJson = validateJWT(token);
+  if (payloadJson !== undefined) {
+    dbmodels.profile.findByOauthtoken(payloadJson.sub, (err, profile) => {
+      callback(err, profile);
+    });
+  } else {
+    callback(new Error('JWT is not valid'), null);
+  }
 }
 
 function extractTokenFromHeader(header, callback) {

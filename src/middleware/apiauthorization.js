@@ -18,6 +18,7 @@ function validateJWT(token) {
 function getProfile(token, callback) {
   const payloadJson = validateJWT(token);
   if (payloadJson !== undefined) {
+  if (payloadJson !== undefined && payloadJson !== null) {
     dbmodels.profile.findByOauthtoken(payloadJson.sub, (err, profile) => {
       callback(err, profile);
     });

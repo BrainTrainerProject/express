@@ -22,7 +22,10 @@ function getProfile(token, callback) {
       callback(err, profile);
     });
   } else {
-    callback(new Error('JWT is not valid'), null);
+    callback({ error: {
+      code: '500',
+      message: 'JWT is not valid',
+    } }, null);
   }
 }
 
@@ -30,25 +33,34 @@ function extractTokenFromHeader(header, callback) {
   if (header.authorization && header.authorization.split(' ')[0] === 'Bearer') {
     const authToken = header.authorization.split(' ')[1];
     if (authToken === undefined) {
-      callback(new Error('The token is undefined'), null);
+      callback({ error: {
+        code: '500',
+        message: 'The token is undefined',
+      } }, null);
     } else {
       callback(null, authToken);
     }
   } else {
-    callback(new Error('Authorization header is empty or does not have the format: "Bearer <token>"'), null);
+    callback({ error: {
+      code: '500',
+      message: 'Authorization header is empty or does not have the format: "Bearer <token>"',
+    } }, null);
   }
 }
 
 function apiAuth(req, res, next) {
   extractTokenFromHeader(req.headers, (err, token) => {
     if (err) {
-      next(err);
+      res.send(err);
     } else if (token) {
       getProfile(token, (err1, profile) => {
         if (err1) {
-          next(err1);
+          res.send(err1);
         } else if (profile === null) {
-          next(new Error('No matching profile found'));
+          res.send({ error: {
+            code: '500',
+            message: 'No matching profile found',
+          } });
         } else {
           req.auth0 = profile;
           next();

@@ -22,8 +22,8 @@ const NOT_OWNER = 'you are not the owner of that object';
  *
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
- * {
- *   "59402f281704792b4c4a151f": {
+ * [
+ *   {
  *     "__v": 0,
  *     "owner": "593eaa0bcf7f5000011c24c4",
  *     "lastchange": "2017-06-13T18:30:00.076Z",
@@ -35,7 +35,7 @@ const NOT_OWNER = 'you are not the owner of that object';
  *     "tags": [ "wuppi", "fluppi" ],
  *     "notecard": [ "593eaebcf8ac692c4c13b2c1" ]
  *   },...
- * }
+ * ]
  */
 function getAllAction(req, res) {
   dbmodel.set.findByOwner(req.auth0.id, (err, sets) => {

@@ -51,8 +51,7 @@ router.delete('/statistic/:id', statisticController.deleteAction);
 
 router.get('/activity/:page', activityController.pageActivityAction);
 
-router.get('/practice', practiceController.startPracticeAction);
-router.get('/practice/set/:id', practiceController.startPracticeBySetIdAction);
-// router.get('/practice', practiceController.getAction);
+router.get('/practice', practiceController.getPracticeAction);
+router.get('/practice/set/:id', practiceController.getPracticeBySetIdAction);
 
 export default router;

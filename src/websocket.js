@@ -30,7 +30,10 @@ function createApplication(server) {
           if (err1 || profile === null) {
             socket.disconnect(true);
           } else {
-            users.push({ socket, profile });
+            const iid = setInterval(() => {
+              socket.emit('practice_begin', 'justDoIt!');
+            }, profile.interval * 60 * 1000);
+            users.push({ socket, profile, iid });
             console.log('connect successful');
           }
         });
@@ -45,6 +48,7 @@ function createApplication(server) {
     socket.on('disconnect', () => {
       for (let i = 0; i < users.length; i += 1) {
         if (users[i].socket === socket) {
+          clearInterval(users[i].iid);
           users.splice(i, 1);
           break;
         }

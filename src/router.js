@@ -31,7 +31,7 @@ router.post('/set/:id/removeTags', setController.removeTagsAction);
 router.get('/profile', profileController.getByIdAction);
 // router.get('/profile', profileController.getAllAction);
 // router.post('/profile', profileController.createAction);
-// router.put('/profile', profileController.updateAction);
+router.put('/profile', profileController.updateAction);
 // router.delete('/profile', profileController.deleteAction);
 router.post('/profile/:id/follow', profileController.followAction);
 router.post('/profile/:id/unfollow', profileController.unfollowAction);

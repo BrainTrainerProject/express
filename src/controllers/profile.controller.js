@@ -29,12 +29,16 @@ function getAllAction(req, res) {
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
  * {
+ *   "_id": "5942637d16560b00013afd9d",
  *   "email": "trololo.guy@meme.com",
  *   "oauthtoken": "auth0|bigfatuglynumber",
  *   "photourl": "https://s.gravatar.com/avatar/bigfatuglynumber.png",
- *   "follower": [],
  *   "visibility": false,
- *   "sets": []
+ *   "cardsPerSession": 5,
+ *   "interval": 30
+ *   "follower": [],
+ *   "sets": [],
+ *   "__v": 0,
  * }
  */
 function getByIdAction(req, res) {
@@ -61,6 +65,46 @@ function createAction(req, res) {
   }
 }
 
+/**
+ * @api             {put} profile PUT authorized profile
+ * @apiName         PutAuthorizedProfile
+ * @apiGroup        profile
+ * @apiDescription  Updates the authorized profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * Content-Type: application/json
+ * Content-Type: application/json
+ * {
+ *   "_id": "5942637d16560b00013afd9d"
+ *   "email": "trololo.guy@meme.com",
+ *   "oauthtoken": "auth0|bigfatuglynumber",
+ *   "photourl": "https://s.gravatar.com/avatar/bigfatuglynumber.png",
+ *   "visibility": false,
+ *   "cardsPerSession": 5,
+ *   "interval": 30
+ *   "follower": [],
+ *   "sets": []
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "_id": "5942637d16560b00013afd9d"
+ *   "email": "trololo.guy@meme.com",
+ *   "oauthtoken": "auth0|bigfatuglynumber",
+ *   "photourl": "https://s.gravatar.com/avatar/bigfatuglynumber.png",
+ *   "visibility": false,
+ *   "cardsPerSession": 5,
+ *   "interval": 30
+ *   "follower": [],
+ *   "sets": [],
+ *   "__v": 0,
+ * }
+ */
 function updateAction(req, res) {
   dbmodel.profile.updateProfile(req.auth0.id, req.body, (err, changedProfile) => {
     if (err) {

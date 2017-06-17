@@ -375,7 +375,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"follower\": [],\n  \"visibility\": false,\n  \"sets\": []\n}",
+          "content": "Content-Type: application/json\n{\n  \"_id\": \"5942637d16560b00013afd9d\",\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"visibility\": false,\n  \"cardsPerSession\": 5,\n  \"interval\": 30\n  \"follower\": [],\n  \"sets\": [],\n  \"__v\": 0,\n}",
           "type": "json"
         }
       ]
@@ -492,6 +492,56 @@ define({ "api": [
         {
           "title": "Response 200",
           "content": "Content-Type: application/json\n{\n  \"_id\": \"59425e658878750001a42a78\",\n  \"email\": \"twiens@fh-bielefeld.de\",\n  \"oauthtoken\": \"auth0|59425e65b2cd9007c3fb5483\",\n  \"photourl\": \"https://s.gravatar.com/avatar/4d3e6507d746b3b849444628a79cf086?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftw.png\",\n  \"visibility\": false,\n  \"__v\": 0,\n  \"sets\": [],\n  \"follower\": [\n    \"5942637d16560b00013afd9d\",\n    \"5942637d16560b00013afd9d\"\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/profile.controller.js",
+    "groupTitle": "profile"
+  },
+  {
+    "type": "put",
+    "url": "profile",
+    "title": "PUT authorized profile",
+    "name": "PutAuthorizedProfile",
+    "group": "profile",
+    "description": "<p>Updates the authorized profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Request",
+          "content": "Content-Type: application/json\nContent-Type: application/json\n{\n  \"_id\": \"5942637d16560b00013afd9d\"\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"visibility\": false,\n  \"cardsPerSession\": 5,\n  \"interval\": 30\n  \"follower\": [],\n  \"sets\": []\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n{\n  \"_id\": \"5942637d16560b00013afd9d\"\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"visibility\": false,\n  \"cardsPerSession\": 5,\n  \"interval\": 30\n  \"follower\": [],\n  \"sets\": [],\n  \"__v\": 0,\n}",
           "type": "json"
         }
       ]

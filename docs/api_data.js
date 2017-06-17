@@ -348,6 +348,95 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "set",
+    "title": "GET random Practice",
+    "name": "GetRandomPractice",
+    "group": "practice",
+    "description": "<p>Generates a practice of one set of which the authorized profile is the owner. returns an array of ordered id's of notecards. The amount of elements depends on the setting &quot;cardsPerSession&quot; from the profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  \"59456137a1a33c3e0c44ad45\",\n  \"59456148a1a33c3e0c44ad47\",\n  \"5945614fa1a33c3e0c44ad49\",\n  ...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/practice.controller.js",
+    "groupTitle": "practice"
+  },
+  {
+    "type": "get",
+    "url": "set",
+    "title": "GET random Practice of specific set",
+    "name": "GetRandomPracticeOfSet",
+    "group": "practice",
+    "description": "<p>Generates a practice of given set of which the authorized profile is the owner. returns an array of ordered id's of notecards. The amount of elements depends on the setting &quot;cardsPerSession&quot; from the profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of targeted set</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  \"59456137a1a33c3e0c44ad45\",\n  \"59456148a1a33c3e0c44ad47\",\n  \"5945614fa1a33c3e0c44ad49\",\n  ...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/practice.controller.js",
+    "groupTitle": "practice"
+  },
+  {
+    "type": "get",
     "url": "profile",
     "title": "GET authorized profile",
     "name": "GetAuthorizedProfile",
@@ -630,7 +719,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n  \"59402f281704792b4c4a151f\": {\n    \"__v\": 0,\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-13T18:30:00.076Z\",\n    \"visibility\": true,\n    \"photourl\": \"\",\n    \"title\": \"Never gonna give you up\",\n    \"description\": \"Never gonna let you down\",\n    \"valuations\": [],\n    \"tags\": [ \"wuppi\", \"fluppi\" ],\n    \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\" ]\n  },...\n}",
+          "content": "Content-Type: application/json\n[\n  {\n    \"__v\": 0,\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-13T18:30:00.076Z\",\n    \"visibility\": true,\n    \"photourl\": \"\",\n    \"title\": \"Never gonna give you up\",\n    \"description\": \"Never gonna let you down\",\n    \"valuations\": [],\n    \"tags\": [ \"wuppi\", \"fluppi\" ],\n    \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\" ]\n  },...\n]",
           "type": "json"
         }
       ]

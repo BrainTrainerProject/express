@@ -30,31 +30,12 @@ function getNextCard(cardsList, statsList) {
   return nextCard;
 }
 
-/* function getNextStat(statsList) {
-  let nextStat = null;
-
-  for (let j = 0; j < statsList.length; j += 1) {
-    const rating = statsList[j].successfultries / statsList[j].totaltries;
-    if (nextStat === null) {
-      nextStat = statsList[j];
-    } else if (statsList[j].totaltries === 0 || statsList[j].successfultries === 0) {
-      nextStat = statsList[j];
-    } else if (rating < nextStat.successfultries / nextStat.totaltries) {
-      nextStat = statsList[j];
-    }
-  }
-
-  return nextStat;
-}*/
-
 function generatePracticeSet(set, owner, amount, callback) {
   dbmodel.statistic.findByNotecardsAndOwner(set.notecard, owner, (err, stats) => {
-    // let statsCopy = stats.slice();
     let notecardsCopy = set.notecard.slice();
     const chosenNotecards = [];
 
     for (let i = 0; i < amount; i += 1) {
-      // const nextStat = getNextStat(statsCopy);
       const nextCard = getNextCard(notecardsCopy, stats);
 
       // add/remove next stat from lists
@@ -74,6 +55,26 @@ function generatePracticeSet(set, owner, amount, callback) {
   });
 }
 
+/**
+ * @api             {get} set GET random Practice
+ * @apiName         GetRandomPractice
+ * @apiGroup        practice
+ * @apiDescription  Generates a practice of one set of which the authorized
+ * profile is the owner. returns an array of ordered id's of notecards. The amount
+ * of elements depends on the setting "cardsPerSession" from the profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   "59456137a1a33c3e0c44ad45",
+ *   "59456148a1a33c3e0c44ad47",
+ *   "5945614fa1a33c3e0c44ad49",
+ *   ...
+ * ]
+ */
 function getPracticeAction(req, res) {
   dbmodel.set.findByOwner(req.auth0.id, (err, sets) => {
     if (err) {
@@ -92,6 +93,27 @@ function getPracticeAction(req, res) {
   });
 }
 
+/**
+ * @api             {get} set GET random Practice of specific set
+ * @apiName         GetRandomPracticeOfSet
+ * @apiGroup        practice
+ * @apiDescription  Generates a practice of given set of which the authorized
+ * profile is the owner. returns an array of ordered id's of notecards. The amount
+ * of elements depends on the setting "cardsPerSession" from the profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} id id of targeted set
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   "59456137a1a33c3e0c44ad45",
+ *   "59456148a1a33c3e0c44ad47",
+ *   "5945614fa1a33c3e0c44ad49",
+ *   ...
+ * ]
+ */
 function getPracticeBySetIdAction(req, res) {
   dbmodel.set.findById(req.params.id, (err, set) => {
     if (set.owner.toString() === req.auth0.id) {

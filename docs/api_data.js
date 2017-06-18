@@ -348,7 +348,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "set",
+    "url": "practice",
     "title": "GET random Practice",
     "name": "GetRandomPractice",
     "group": "practice",
@@ -386,8 +386,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "set",
-    "title": "GET random Practice of specific set",
+    "url": "practice/set/:id",
+    "title": "oder set/:id/practice GET random Practice of specific set",
     "name": "GetRandomPracticeOfSet",
     "group": "practice",
     "description": "<p>Generates a practice of given set of which the authorized profile is the owner. returns an array of ordered id's of notecards. The amount of elements depends on the setting &quot;cardsPerSession&quot; from the profile.</p>",
@@ -427,6 +427,56 @@ define({ "api": [
         {
           "title": "Response 200",
           "content": "Content-Type: application/json\n[\n  \"59456137a1a33c3e0c44ad45\",\n  \"59456148a1a33c3e0c44ad47\",\n  \"5945614fa1a33c3e0c44ad49\",\n  ...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/practice.controller.js",
+    "groupTitle": "practice"
+  },
+  {
+    "type": "post",
+    "url": "practice",
+    "title": "POST evaluate Practice",
+    "name": "PracticeEvaluate",
+    "group": "practice",
+    "description": "<p>Evaluates the practice. It will create or  update statistics for the given practice.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Request",
+          "content": "Content-Type: application/json\n[\n  { \"notecard\": \"593eaebcf8ac692c4c13b2c1\" , \"success\": true },\n  ...\n]",
+          "type": "json"
+        },
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\nTODO",
           "type": "json"
         }
       ]

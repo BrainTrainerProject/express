@@ -56,7 +56,7 @@ function generatePracticeSet(set, owner, amount, callback) {
 }
 
 /**
- * @api             {get} set GET random Practice
+ * @api             {get} practice GET random Practice
  * @apiName         GetRandomPractice
  * @apiGroup        practice
  * @apiDescription  Generates a practice of one set of which the authorized
@@ -94,7 +94,7 @@ function getPracticeAction(req, res) {
 }
 
 /**
- * @api             {get} set GET random Practice of specific set
+ * @api             {get} practice/set/:id oder set/:id/practice GET random Practice of specific set
  * @apiName         GetRandomPracticeOfSet
  * @apiGroup        practice
  * @apiDescription  Generates a practice of given set of which the authorized
@@ -126,7 +126,71 @@ function getPracticeBySetIdAction(req, res) {
   });
 }
 
+/**
+ * @api             {post} practice POST evaluate Practice
+ * @apiName         PracticeEvaluate
+ * @apiGroup        practice
+ * @apiDescription  Evaluates the practice. It will create or  update statistics
+ * for the given practice.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * Content-Type: application/json
+ * [
+ *   { "notecard": "593eaebcf8ac692c4c13b2c1" , "success": true },
+ *   ...
+ * ]
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * TODO
+ */
+function evaluatePractice(req, res) {
+  dbmodel.statistic.findByOwner(req.auth0.id, (err, stats) => {
+    const copy = req.body.slice();
+    const updatedStats = [];
+    const createStats = [];
+
+    for (let i = 0; i < stats.length; i += 1) {
+      for (let j = 0; j < req.body.length; j += 1) {
+        // found and update
+        if (stats[i].notecard.toString() === req.body[j].notecard) {
+          const stat = stats[i];
+          stat.totaltries += 1;
+          if (copy[j].success) {
+            stat.successfultries += 1;
+          }
+          updatedStats.push(stat);
+
+          // remove element from copy
+          const index = copy.indexOf(stat);
+          if (index > -1) {
+            copy.splice(index, 1);
+          }
+        }
+      }
+    }
+
+    // create new Stats
+    for (let i = 0; i < copy.length; i += 1) {
+      createStats.push({
+        profile: req.auth0.id,
+        notecard: copy[i].notecard,
+        successfultries: copy[i].success ? 0 : 1,
+        totaltries: 1,
+      });
+    }
+
+    res.send('Not yet implemented');
+    // TODO: aktualisierung anstossen
+  });
+}
+
 export default {
   getPracticeAction,
   getPracticeBySetIdAction,
+  evaluatePractice,
 };

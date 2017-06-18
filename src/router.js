@@ -30,7 +30,8 @@ router.post('/set/:id/removeCards', setController.removeCardsAction);
 router.post('/set/:id/addTags', setController.addTagsAction);
 router.post('/set/:id/removeTags', setController.removeTagsAction);
 router.get('/set/:id/practice', practiceController.getPracticeBySetIdAction);
-router.post('/set/:id/evaluate', setController.createEvaluation);
+router.post('/set/:id/evaluate', setController.createEvaluationAction);
+router.get('/set/:id/import', setController.importAction);
 
 router.get('/profile', profileController.getByIdAction);
 router.get('/profile/:id/set', setController.getByProfileAction);

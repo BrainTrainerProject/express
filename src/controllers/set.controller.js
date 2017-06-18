@@ -581,7 +581,7 @@ function removeTagsAction(req, res) {
  *   "_id": "59468275d0b321046c2522bc"
  * }
  */
-function createEvaluation(req, res) {
+function createEvaluationAction(req, res) {
   req.body.profile = req.auth0.id;
   req.body.createdAt = new Date();
   dbmodel.valuation.createValuation(req.body, (err, evalu) => {
@@ -599,6 +599,47 @@ function createEvaluation(req, res) {
   });
 }
 
+/**
+ * @api             {get} set/:id/import GET Set
+ * @apiName         GetSetImport
+ * @apiGroup        set
+ * @apiDescription  Imports the set.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "__v": 0,
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T18:30:00.076Z",
+ *   "visibility": true,
+ *   "photourl": "",
+ *   "title": "Never gonna give you up",
+ *   "description": "Never gonna let you down",
+ *   "_id": "59402f281704792b4c4a151f",
+ *   "valuations": [],
+ *   "tags": [ "wuppi", "fluppi" ],
+ *   "notecard": [ "593eaebcf8ac692c4c13b2c1" ]
+ * }
+ */
+function importAction(req, res) {
+  dbmodel.set.findById(req.params.id, (err, set) => {
+    const bla = set;
+    bla.owner = req.auth0.id;
+    bla.lastchange = new Date();
+    dbmodel.set.createSet(bla, (err1, newSet) => {
+      if (err1) {
+        res.send(CONTACT_ADMIN);
+      } else {
+        res.send(newSet);
+      }
+    });
+  });
+}
+
 export default {
   getAllAction,
   getByIdAction,
@@ -610,5 +651,6 @@ export default {
   removeCardsAction,
   addTagsAction,
   removeTagsAction,
-  createEvaluation,
+  createEvaluationAction,
+  importAction,
 };

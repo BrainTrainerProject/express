@@ -780,6 +780,44 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "set/profile/:id",
+    "title": "or profile/:id/set GET Sets from profile",
+    "name": "GetProfileSets",
+    "group": "set",
+    "description": "<p>Collects all the sets of which the given profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  {\n    \"__v\": 0,\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-13T18:30:00.076Z\",\n    \"visibility\": true,\n    \"photourl\": \"\",\n    \"title\": \"Never gonna give you up\",\n    \"description\": \"Never gonna let you down\",\n    \"valuations\": [],\n    \"tags\": [ \"wuppi\", \"fluppi\" ],\n    \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\" ]\n  },...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/set.controller.js",
+    "groupTitle": "set"
+  },
+  {
+    "type": "get",
     "url": "set/:id",
     "title": "GET specific Set",
     "name": "GetSpecificSet",
@@ -821,6 +859,69 @@ define({ "api": [
         {
           "title": "Response 200",
           "content": "Content-Type: application/json\n{\n  \"__v\": 0,\n  \"owner\": \"593eaa0bcf7f5000011c24c4\",\n  \"lastchange\": \"2017-06-13T18:30:00.076Z\",\n  \"visibility\": true,\n  \"photourl\": \"\",\n  \"title\": \"Never gonna give you up\",\n  \"description\": \"Never gonna let you down\",\n  \"_id\": \"59402f281704792b4c4a151f\",\n  \"valuations\": [],\n  \"tags\": [ \"wuppi\", \"fluppi\" ],\n  \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\" ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/set.controller.js",
+    "groupTitle": "set"
+  },
+  {
+    "type": "post",
+    "url": "set/:id/evaluate",
+    "title": "POST evaluate",
+    "name": "PostEvaluate",
+    "group": "set",
+    "description": "<p>Creates a new evaluation for the set.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the Set evaluated Set</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Request",
+          "content": "{\n  \"score\": 1,\n  \"comment\": \"war kacke\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Response 200",
+          "content": "{\n  \"__v\": 0,\n  \"score\": 1,\n  \"comment\": \"war kacke\",\n  \"profile\": \"594287b2dec5c60001a2a0da\",\n  \"createdAt\": \"2017-06-18T13:39:01.224Z\",\n  \"_id\": \"59468275d0b321046c2522bc\"\n}",
           "type": "json"
         }
       ]

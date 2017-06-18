@@ -21,6 +21,7 @@ router.delete('/notecard/:id', notecardController.deleteAction);
 
 router.get('/set/:id', setController.getByIdAction);
 router.get('/set', setController.getAllAction);
+router.get('/set/profile/:id', setController.getByProfileAction);
 router.post('/set', setController.createAction);
 router.put('/set/:id', setController.updateAction);
 router.delete('/set/:id', setController.deleteAction);
@@ -29,8 +30,10 @@ router.post('/set/:id/removeCards', setController.removeCardsAction);
 router.post('/set/:id/addTags', setController.addTagsAction);
 router.post('/set/:id/removeTags', setController.removeTagsAction);
 router.get('/set/:id/practice', practiceController.getPracticeBySetIdAction);
+router.post('/set/:id/evaluate', setController.createEvaluation);
 
 router.get('/profile', profileController.getByIdAction);
+router.get('/profile/:id/set', setController.getByProfileAction);
 // router.get('/profile', profileController.getAllAction);
 // router.post('/profile', profileController.createAction);
 router.put('/profile', profileController.updateAction);

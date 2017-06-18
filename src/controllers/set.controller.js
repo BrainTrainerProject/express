@@ -88,6 +88,46 @@ function getByIdAction(req, res) {
 }
 
 /**
+ * @api             {get} set/profile/:id or profile/:id/set GET Sets from profile
+ * @apiName         GetProfileSets
+ * @apiGroup        set
+ * @apiDescription  Collects all the sets of which the given profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   {
+ *     "__v": 0,
+ *     "owner": "593eaa0bcf7f5000011c24c4",
+ *     "lastchange": "2017-06-13T18:30:00.076Z",
+ *     "visibility": true,
+ *     "photourl": "",
+ *     "title": "Never gonna give you up",
+ *     "description": "Never gonna let you down",
+ *     "valuations": [],
+ *     "tags": [ "wuppi", "fluppi" ],
+ *     "notecard": [ "593eaebcf8ac692c4c13b2c1" ]
+ *   },...
+ * ]
+ */
+function getByProfileAction(req, res) {
+  if (req.params == null || req.params.id === null) {
+    res.send(NO_OBJECT_ID);
+  } else {
+    dbmodel.set.findByOwner(req.params.id, (err, sets) => {
+      if (err) {
+        res.send(CONTACT_ADMIN);
+      } else {
+        res.send(sets);
+      }
+    });
+  }
+}
+
+/**
  * @api             {post} set POST Set
  * @apiName         PostSet
  * @apiGroup        set
@@ -514,9 +554,55 @@ function removeTagsAction(req, res) {
   }
 }
 
+/**
+ * @api             {post} set/:id/evaluate POST evaluate
+ * @apiName         PostEvaluate
+ * @apiGroup        set
+ * @apiDescription  Creates a new evaluation for the set.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of the Set evaluated Set
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Request
+ * {
+ *   "score": 1,
+ *   "comment": "war kacke"
+ * }
+ *
+ * @apiSuccessExample {json} Response 200
+ * {
+ *   "__v": 0,
+ *   "score": 1,
+ *   "comment": "war kacke",
+ *   "profile": "594287b2dec5c60001a2a0da",
+ *   "createdAt": "2017-06-18T13:39:01.224Z",
+ *   "_id": "59468275d0b321046c2522bc"
+ * }
+ */
+function createEvaluation(req, res) {
+  req.body.profile = req.auth0.id;
+  req.body.createdAt = new Date();
+  dbmodel.valuation.createValuation(req.body, (err, evalu) => {
+    if (err) {
+      res.send(CONTACT_ADMIN);
+    } else {
+      dbmodel.set.addValuations(req.params.id, [evalu.id], (err1) => {
+        if (err1) {
+          res.send(CONTACT_ADMIN);
+        } else {
+          res.send(evalu);
+        }
+      });
+    }
+  });
+}
+
 export default {
   getAllAction,
   getByIdAction,
+  getByProfileAction,
   createAction,
   updateAction,
   deleteAction,
@@ -524,4 +610,5 @@ export default {
   removeCardsAction,
   addTagsAction,
   removeTagsAction,
+  createEvaluation,
 };

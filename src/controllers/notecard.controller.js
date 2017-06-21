@@ -199,7 +199,6 @@ function createAndAppendAction(req, res) {
         });
       }
     });
-    res.send('Not yet implemented');
   }
 }
 

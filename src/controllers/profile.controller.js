@@ -8,6 +8,27 @@ const NOT_VISIBLE = 'Profile is private';
 // const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
 // const NOT_OWNER = 'you are not the owner of that object';
 
+function appendStatistic(prof, res) {
+  const profile1 = prof.toObject();
+  profile1.setsCount = 0;
+  profile1.notecardCount = 0;
+  profile1.followerCount = 0;
+
+  profile1.followerCount = profile1.follower.length;
+
+  dbmodel.set.findByOwner(profile1.id, (err, sets) => {
+    if (sets) {
+      profile1.setsCount = sets.length;
+    }
+    dbmodel.notecard.findByOwner(profile1.id, (err1, cards) => {
+      if (cards) {
+        profile1.notecardCount = cards.length;
+      }
+      res.send(profile1);
+    });
+  });
+}
+
 /**
  * @api             {get} profile GET specified profile
  * @apiName         GetSpecifiedProfile
@@ -37,7 +58,7 @@ function getByIdAction(req, res) {
     if (err) {
       res.send(CONTACT_ADMIN);
     } else if (profile.visibility) {
-      res.send(profile);
+      appendStatistic(profile, res);
     } else {
       res.send(res.send(NOT_VISIBLE));
     }
@@ -73,7 +94,7 @@ function getByOwnerAction(req, res) {
     if (err) {
       res.send(CONTACT_ADMIN);
     } else {
-      res.send(profile);
+      appendStatistic(profile, res);
     }
   });
 }

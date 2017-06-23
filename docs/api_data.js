@@ -524,6 +524,44 @@ define({ "api": [
     "groupTitle": "profile"
   },
   {
+    "type": "get",
+    "url": "profile",
+    "title": "GET specified profile",
+    "name": "GetSpecifiedProfile",
+    "group": "profile",
+    "description": "<p>Returns the specified profile.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n{\n  \"_id\": \"5942637d16560b00013afd9d\",\n  \"email\": \"trololo.guy@meme.com\",\n  \"oauthtoken\": \"auth0|bigfatuglynumber\",\n  \"photourl\": \"https://s.gravatar.com/avatar/bigfatuglynumber.png\",\n  \"visibility\": true,\n  \"cardsPerSession\": 5,\n  \"interval\": 30\n  \"follower\": [],\n  \"sets\": [],\n  \"__v\": 0,\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/profile.controller.js",
+    "groupTitle": "profile"
+  },
+  {
     "type": "post",
     "url": "profile/:id/follow",
     "title": "POST ProfileFollow",

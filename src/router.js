@@ -33,9 +33,9 @@ router.get('/set/:id/practice', practiceController.getPracticeBySetIdAction);
 router.post('/set/:id/evaluate', setController.createEvaluationAction);
 router.get('/set/:id/import', setController.importAction);
 
-router.get('/profile', profileController.getByIdAction);
+router.get('/profile', profileController.getByOwnerAction);
 router.get('/profile/:id/set', setController.getByProfileAction);
-// router.get('/profile', profileController.getAllAction);
+router.get('/profile/:id', profileController.getByIdAction);
 // router.post('/profile', profileController.createAction);
 router.put('/profile', profileController.updateAction);
 // router.delete('/profile', profileController.deleteAction);

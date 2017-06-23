@@ -4,15 +4,42 @@ import websocket from '../websocket';
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
 const BODY_EMPTY = 'The body was empty';
 const NO_OBJECT_ID = 'There was no id in the request';
+const NOT_VISIBLE = 'Profile is private';
 // const NOT_EXISTED_BEFORE = 'Couldn\'t match id to an actual object';
 // const NOT_OWNER = 'you are not the owner of that object';
 
-function getAllAction(req, res) {
-  dbmodel.profile.findAll((err, map) => {
+/**
+ * @api             {get} profile GET specified profile
+ * @apiName         GetSpecifiedProfile
+ * @apiGroup        profile
+ * @apiDescription  Returns the specified profile.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * {
+ *   "_id": "5942637d16560b00013afd9d",
+ *   "email": "trololo.guy@meme.com",
+ *   "oauthtoken": "auth0|bigfatuglynumber",
+ *   "photourl": "https://s.gravatar.com/avatar/bigfatuglynumber.png",
+ *   "visibility": true,
+ *   "cardsPerSession": 5,
+ *   "interval": 30
+ *   "follower": [],
+ *   "sets": [],
+ *   "__v": 0,
+ * }
+ */
+function getByIdAction(req, res) {
+  dbmodel.profile.findById(req.params.id, (err, profile) => {
     if (err) {
       res.send(CONTACT_ADMIN);
+    } else if (profile.visibility) {
+      res.send(profile);
     } else {
-      res.send(map);
+      res.send(res.send(NOT_VISIBLE));
     }
   });
 }
@@ -41,7 +68,7 @@ function getAllAction(req, res) {
  *   "__v": 0,
  * }
  */
-function getByIdAction(req, res) {
+function getByOwnerAction(req, res) {
   dbmodel.profile.findById(req.auth0.id, (err, profile) => {
     if (err) {
       res.send(CONTACT_ADMIN);
@@ -209,8 +236,8 @@ function unfollowAction(req, res) {
 }
 
 export default {
-  getAllAction,
   getByIdAction,
+  getByOwnerAction,
   createAction,
   updateAction,
   deleteAction,

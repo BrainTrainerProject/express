@@ -901,6 +901,51 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "set/search?param=:param1,param2",
+    "title": "GET Set",
+    "name": "GetSetSearch",
+    "group": "set",
+    "description": "<p>Search for sets</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  {\n    \"__v\": 0,\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-13T18:30:00.076Z\",\n    \"visibility\": true,\n    \"photourl\": \"\",\n    \"title\": \"Never gonna give you up\",\n    \"description\": \"Never gonna let you down\",\n    \"_id\": \"59402f281704792b4c4a151f\",\n    \"valuations\": [],\n    \"tags\": [ \"wuppi\", \"fluppi\" ],\n    \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\" ]\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/set.controller.js",
+    "groupTitle": "set"
+  },
+  {
+    "type": "get",
     "url": "set/:id",
     "title": "GET specific Set",
     "name": "GetSpecificSet",

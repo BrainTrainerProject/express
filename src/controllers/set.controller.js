@@ -640,6 +640,49 @@ function importAction(req, res) {
   });
 }
 
+/**
+ * @api             {get} set/search?param=:param1,param2 GET Set
+ * @apiName         GetSetSearch
+ * @apiGroup        set
+ * @apiDescription  Search for sets
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   {
+ *     "__v": 0,
+ *     "owner": "593eaa0bcf7f5000011c24c4",
+ *     "lastchange": "2017-06-13T18:30:00.076Z",
+ *     "visibility": true,
+ *     "photourl": "",
+ *     "title": "Never gonna give you up",
+ *     "description": "Never gonna let you down",
+ *     "_id": "59402f281704792b4c4a151f",
+ *     "valuations": [],
+ *     "tags": [ "wuppi", "fluppi" ],
+ *     "notecard": [ "593eaebcf8ac692c4c13b2c1" ]
+ *   }
+ * ]
+ */
+function searchAction(req, res) {
+  if (req.query.param === undefined) {
+    res.send('Kaputter Query String, Junge');
+  } else {
+    const searchParam = req.query.param.split(',');
+    dbmodel.set.search(searchParam, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(result);
+      }
+    });
+  }
+}
+
 export default {
   getAllAction,
   getByIdAction,
@@ -653,4 +696,5 @@ export default {
   removeTagsAction,
   createEvaluationAction,
   importAction,
+  searchAction,
 };

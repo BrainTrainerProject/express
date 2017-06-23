@@ -19,6 +19,7 @@ router.post('/notecard/set/:id', notecardController.createAndAppendAction);
 router.put('/notecard/:id', notecardController.updateAction);
 router.delete('/notecard/:id', notecardController.deleteAction);
 
+router.get('/set/search', setController.searchAction);
 router.get('/set/:id', setController.getByIdAction);
 router.get('/set', setController.getAllAction);
 router.get('/set/profile/:id', setController.getByProfileAction);

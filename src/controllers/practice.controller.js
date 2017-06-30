@@ -55,6 +55,27 @@ function generatePracticeSet(set, owner, amount, callback) {
   });
 }
 
+function randomSetPractice(req, res, cardsPerSession) {
+  dbmodel.set.findByOwner(req.auth0.id, (err, sets) => {
+    if (err) {
+      res.send(CONTACT_ADMIN);
+    } else if (sets.length === 0) {
+      const emptyPractice = [];
+      res.send(emptyPractice);
+    } else {
+      const set = sets[Math.floor(Math.random() * sets.length)];
+      generatePracticeSet(set, req.auth0.id, cardsPerSession,
+        (err1, cards) => {
+          if (err1) {
+            res.send(CONTACT_ADMIN);
+          } else {
+            res.send(cards);
+          }
+        });
+    }
+  });
+}
+
 /**
  * @api             {get} practice GET random Practice
  * @apiName         GetRandomPractice
@@ -62,7 +83,7 @@ function generatePracticeSet(set, owner, amount, callback) {
  * @apiDescription  Generates a practice of one set of which the authorized
  * profile is the owner. returns an array of ordered id's of notecards. The amount
  * of elements depends on the setting "cardsPerSession" from the profile. If the
- * profile doesn't have any sets a empty JSON array will be send.
+ * profile doesn't have any sets an empty JSON array will be send.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiPermission   AuthToken
@@ -77,24 +98,32 @@ function generatePracticeSet(set, owner, amount, callback) {
  * ]
  */
 function getPracticeAction(req, res) {
-  dbmodel.set.findByOwner(req.auth0.id, (err, sets) => {
-    if (err) {
-      res.send(CONTACT_ADMIN);
-    } else if (sets.length === 0) {
-      const emptyPractice = [];
-      res.send(emptyPractice);
-    } else {
-      const set = sets[Math.floor(Math.random() * sets.length)];
-      generatePracticeSet(set, req.auth0.id, req.auth0.cardsPerSession,
-        (err1, cards) => {
-          if (err1) {
-            res.send(CONTACT_ADMIN);
-          } else {
-            res.send(cards);
-          }
-        });
-    }
-  });
+  randomSetPractice(req, res, req.auth0.cardsPerSession);
+}
+
+/**
+ * @api             {get} practice GET random Practice with amount
+ * @apiName         GetRandomPracticeWithAmount
+ * @apiGroup        practice
+ * @apiDescription  Generates a practice of one set of which the authorized
+ * profile is the owner. returns an array of ordered id's of notecards. If the
+ * profile doesn't have any sets an empty JSON array will be send.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} amount amount of cards in this practice
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   "59456137a1a33c3e0c44ad45",
+ *   "59456148a1a33c3e0c44ad47",
+ *   "5945614fa1a33c3e0c44ad49",
+ *   ...
+ * ]
+ */
+function getPracticeActionWithAmount(req, res) {
+  randomSetPractice(req, res, req.params.cardsPerSession);
 }
 
 /**
@@ -122,6 +151,40 @@ function getPracticeBySetIdAction(req, res) {
   dbmodel.set.findById(req.params.id, (err, set) => {
     if (set.owner.toString() === req.auth0.id) {
       generatePracticeSet(set, req.auth0.id, req.auth0.cardsPerSession, (err1, cards) => {
+        res.send(cards);
+      });
+    } else {
+      res.send(NOT_OWNER);
+    }
+  });
+}
+
+/**
+ * @api             {get} practice/set/:id/:amount oder set/:id/practice/:amount
+  GET random Practice of specific set
+ * @apiName         GetRandomPracticeOfSetWithAmount
+ * @apiGroup        practice
+ * @apiDescription  Generates a practice of given set of which the authorized
+ * profile is the owner. returns an array of ordered id's of notecards.
+ *
+ * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiParam        {Number} id id of targeted set
+ * @apiParam        {Number} amount amount of cards in this practice
+ * @apiPermission   AuthToken
+ *
+ * @apiSuccessExample {json} Response 200
+ * Content-Type: application/json
+ * [
+ *   "59456137a1a33c3e0c44ad45",
+ *   "59456148a1a33c3e0c44ad47",
+ *   "5945614fa1a33c3e0c44ad49",
+ *   ...
+ * ]
+ */
+function getPracticeBySetIdAndAmountAction(req, res) {
+  dbmodel.set.findById(req.params.id, (err, set) => {
+    if (set.owner.toString() === req.auth0.id) {
+      generatePracticeSet(set, req.auth0.id, req.params.cardsPerSession, (err1, cards) => {
         res.send(cards);
       });
     } else {
@@ -195,6 +258,8 @@ function evaluatePractice(req, res) {
 
 export default {
   getPracticeAction,
+  getPracticeActionWithAmount,
   getPracticeBySetIdAction,
+  getPracticeBySetIdAndAmountAction,
   evaluatePractice,
 };

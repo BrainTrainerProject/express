@@ -31,6 +31,7 @@ router.post('/set/:id/removeCards', setController.removeCardsAction);
 router.post('/set/:id/addTags', setController.addTagsAction);
 router.post('/set/:id/removeTags', setController.removeTagsAction);
 router.get('/set/:id/practice', practiceController.getPracticeBySetIdAction);
+router.get('/set/:id/practice/:cardsPerSession', practiceController.getPracticeBySetIdAndAmountAction);
 router.post('/set/:id/evaluate', setController.createEvaluationAction);
 router.get('/set/:id/import', setController.importAction);
 
@@ -58,7 +59,9 @@ router.delete('/statistic/:id', statisticController.deleteAction);
 router.get('/activity/:page', activityController.pageActivityAction);
 
 router.get('/practice', practiceController.getPracticeAction);
+router.get('/practice/:cardsPerSession', practiceController.getPracticeActionWithAmount);
 router.get('/practice/set/:id', practiceController.getPracticeBySetIdAction);
+router.get('/practice/set/:id/:cardsPerSession', practiceController.getPracticeBySetIdAndAmountAction);
 router.post('/practice/evaluate', practiceController.evaluatePractice);
 
 export default router;

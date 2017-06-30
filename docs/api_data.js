@@ -352,7 +352,7 @@ define({ "api": [
     "title": "GET random Practice",
     "name": "GetRandomPractice",
     "group": "practice",
-    "description": "<p>Generates a practice of one set of which the authorized profile is the owner. returns an array of ordered id's of notecards. The amount of elements depends on the setting &quot;cardsPerSession&quot; from the profile.</p>",
+    "description": "<p>Generates a practice of one set of which the authorized profile is the owner. returns an array of ordered id's of notecards. The amount of elements depends on the setting &quot;cardsPerSession&quot; from the profile. If the profile doesn't have any sets an empty JSON array will be send.</p>",
     "header": {
       "fields": {
         "Header": [
@@ -413,6 +413,115 @@ define({ "api": [
             "optional": false,
             "field": "id",
             "description": "<p>id of targeted set</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  \"59456137a1a33c3e0c44ad45\",\n  \"59456148a1a33c3e0c44ad47\",\n  \"5945614fa1a33c3e0c44ad49\",\n  ...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/practice.controller.js",
+    "groupTitle": "practice"
+  },
+  {
+    "type": "get",
+    "url": "practice/set/:id/:amount oder set/:id/practice/:amount",
+    "title": "GET random Practice of specific set",
+    "name": "GetRandomPracticeOfSetWithAmount",
+    "group": "practice",
+    "description": "<p>Generates a practice of given set of which the authorized profile is the owner. returns an array of ordered id's of notecards.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of targeted set</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>amount of cards in this practice</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  \"59456137a1a33c3e0c44ad45\",\n  \"59456148a1a33c3e0c44ad47\",\n  \"5945614fa1a33c3e0c44ad49\",\n  ...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/practice.controller.js",
+    "groupTitle": "practice"
+  },
+  {
+    "type": "get",
+    "url": "practice",
+    "title": "GET random Practice with amount",
+    "name": "GetRandomPracticeWithAmount",
+    "group": "practice",
+    "description": "<p>Generates a practice of one set of which the authorized profile is the owner. returns an array of ordered id's of notecards. If the profile doesn't have any sets an empty JSON array will be send.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "amount",
+            "description": "<p>amount of cards in this practice</p>"
           }
         ]
       }

@@ -607,6 +607,7 @@ function createEvaluationAction(req, res) {
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
+ * @apiParam        {Number} id id of the set
  * @apiPermission   AuthToken
  *
  * @apiSuccessExample {json} Response 200

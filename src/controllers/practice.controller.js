@@ -194,10 +194,10 @@ function getPracticeBySetIdAndAmountAction(req, res) {
 }
 
 /**
- * @api             {post} practice POST evaluate Practice
+ * @api             {post} practice/evaluate POST evaluate Practice
  * @apiName         PracticeEvaluate
  * @apiGroup        practice
- * @apiDescription  Evaluates the practice. It will create or  update statistics
+ * @apiDescription  Evaluates the practice. It will create or update statistics
  * for the given practice.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
@@ -221,6 +221,7 @@ function evaluatePractice(req, res) {
     const updatedStats = [];
     const createStats = [];
 
+    // first look for existing statistics
     for (let i = 0; i < stats.length; i += 1) {
       for (let j = 0; j < req.body.length; j += 1) {
         // found and update
@@ -241,7 +242,7 @@ function evaluatePractice(req, res) {
       }
     }
 
-    // create new Stats
+    // then create new Stats because they are first time practices
     for (let i = 0; i < copy.length; i += 1) {
       createStats.push({
         profile: req.auth0.id,
@@ -251,8 +252,23 @@ function evaluatePractice(req, res) {
       });
     }
 
-    res.send('Not yet implemented');
-    // TODO: aktualisierung anstossen
+    console.log('before');
+    dbmodel.statistic.updateStatisticMultiple(updatedStats, (err1, oldStats) => {
+      console.log(oldStats);
+      if (err1) {
+        console.log(err1);
+        res.send(err1);
+      } else {
+        dbmodel.statistic.createStatisticMultiple(createStats, (err2) => {
+          if (err2) {
+            console.log(err2);
+            res.send(err2);
+          } else {
+            res.send('k');
+          }
+        });
+      }
+    });
   });
 }
 

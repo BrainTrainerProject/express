@@ -61,7 +61,8 @@ function generatePracticeSet(set, owner, amount, callback) {
  * @apiGroup        practice
  * @apiDescription  Generates a practice of one set of which the authorized
  * profile is the owner. returns an array of ordered id's of notecards. The amount
- * of elements depends on the setting "cardsPerSession" from the profile.
+ * of elements depends on the setting "cardsPerSession" from the profile. If the
+ * profile doesn't have any sets a empty JSON array will be send.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiPermission   AuthToken
@@ -79,6 +80,9 @@ function getPracticeAction(req, res) {
   dbmodel.set.findByOwner(req.auth0.id, (err, sets) => {
     if (err) {
       res.send(CONTACT_ADMIN);
+    } else if (sets.length === 0) {
+      const emptyPractice = [];
+      res.send(emptyPractice);
     } else {
       const set = sets[Math.floor(Math.random() * sets.length)];
       generatePracticeSet(set, req.auth0.id, req.auth0.cardsPerSession,

@@ -674,6 +674,8 @@ function searchAction(req, res) {
     res.send('Kaputter Query String, Junge');
   } else {
     const searchParam = req.query.param.split(',');
+    const orderParam = req.query.orderBy;
+    console.log(orderParam);
     dbmodel.set.search(searchParam, (err, result) => {
       if (err) {
         res.send(err);

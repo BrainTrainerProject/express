@@ -642,7 +642,7 @@ function importAction(req, res) {
 }
 
 /**
- * @api             {get} set/search?param=:param1,param2 GET Set
+ * @api             {get} set/search?param=:param1,param2&orderBy=:date&sort=:asc GET Set
  * @apiName         GetSetSearch
  * @apiGroup        set
  * @apiDescription  Search for sets
@@ -671,18 +671,51 @@ function importAction(req, res) {
  */
 function searchAction(req, res) {
   if (req.query.param === undefined) {
+    // TODO gib alle öffentlichen aus
     res.send('Kaputter Query String, Junge');
   } else {
     const searchParam = req.query.param.split(',');
-    const orderParam = req.query.orderBy;
-    console.log(orderParam);
-    dbmodel.set.search(searchParam, (err, result) => {
-      if (err) {
-        res.send(err);
-      } else {
-        res.send(result);
+    const orderByParam = req.query.orderBy;
+    const sortParam = req.query.sort;
+    if (orderByParam === undefined) {
+      dbmodel.set.search(searchParam, false, false, (err, result) => {
+        if (err) {
+          res.send(err);
+        } else {
+          // TODO Bewertung ausrechnen
+          res.send(result);
+        }
+      });
+    } else if (orderByParam.toLowerCase() === 'date') {
+      let sortP = false;
+      if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
+        sortP = true;
       }
-    });
+      dbmodel.set.search(searchParam, true, sortP, (err, result) => {
+        if (err) {
+          res.send(err);
+        } else {
+          // TODO Bewertung ausrechnen
+          res.send(result);
+        }
+      });
+    } else if (orderByParam.toLowerCase() === 'rating') {
+      let sortP = false;
+      if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
+        sortP = true;
+      }
+      dbmodel.set.search(searchParam, true, sortP, (err, result) => {
+        if (err) {
+          res.send(err);
+        } else {
+          // TODO Bewertung ausrechnen
+          // TODO nach Bewertung sortieren dbmodel
+          res.send(result);
+        }
+      });
+    } else {
+      res.send('orderBy: date oder rating');
+    }
   }
 }
 

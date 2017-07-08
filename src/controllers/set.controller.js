@@ -641,6 +641,37 @@ function importAction(req, res) {
   });
 }
 
+function calcRating(collection, res) {
+  let vals = [];
+  for (let i = 0; i < collection.size; i += 1) {
+    vals = vals.concat(collection[i].valuations);
+  }
+
+  // TODO: öalskdngslkhg
+  dbmodel.valuation.findByValuations(vals, (err, result) => {
+    // Fuer jedes Set die bewertung ausrechnen
+    for (let i = 0; i < collection.size; i += 1) {
+      const vals1 = collection[i].valuations;
+      let scoreP = 0;
+
+      // Ueber die Valuations des Sets die echten Vals finden
+      for (let j = 0; j < vals1.size; j += 0) {
+        for (let k = 0; k < result.size; k += 1) {
+          // gefunden und score berechnen
+          if (vals1[j] === result[k].id) {
+            scoreP += result[k].score;
+          }
+        }
+      }
+
+      // Anschließend Mitteln und anhaengen
+      scoreP /= vals1.size;
+      collection[i].score = scoreP;
+    }
+    res.send(collection);
+  });
+}
+
 /**
  * @api             {get} set/search?param=:param1,param2&orderBy=:date&sort=:asc GET Set
  * @apiName         GetSetSearch
@@ -682,8 +713,7 @@ function searchAction(req, res) {
         if (err) {
           res.send(err);
         } else {
-          // TODO Bewertung ausrechnen
-          res.send(result);
+          calcRating(result, res);
         }
       });
     } else if (orderByParam.toLowerCase() === 'date') {
@@ -695,8 +725,7 @@ function searchAction(req, res) {
         if (err) {
           res.send(err);
         } else {
-          // TODO Bewertung ausrechnen
-          res.send(result);
+          calcRating(result, res);
         }
       });
     } else if (orderByParam.toLowerCase() === 'rating') {

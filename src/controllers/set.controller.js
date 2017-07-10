@@ -641,34 +641,43 @@ function importAction(req, res) {
   });
 }
 
-function calcRating(collection, res) {
-  let vals = [];
-  for (let i = 0; i < collection.size; i += 1) {
-    vals = vals.concat(collection[i].valuations);
+function calcRating(collection, callback) {
+  const vals = [];
+  for (let i = 0; i < collection.length; i += 1) {
+    for (let j = 0; j < collection[i].valuations.length; j += 1) {
+      vals.push(collection[i].valuations[j]);
+    }
   }
 
+  const toReturn = [];
   // TODO: öalskdngslkhg
-  dbmodel.valuation.findByValuations(vals, (err, result) => {
+  dbmodel.valuation.findByIds(vals, (err, result) => {
     // Fuer jedes Set die bewertung ausrechnen
-    for (let i = 0; i < collection.size; i += 1) {
+    for (let i = 0; i < collection.length; i += 1) {
       const vals1 = collection[i].valuations;
       let scoreP = 0;
 
       // Ueber die Valuations des Sets die echten Vals finden
-      for (let j = 0; j < vals1.size; j += 0) {
-        for (let k = 0; k < result.size; k += 1) {
+      for (let j = 0; j < vals1.length; j += 1) {
+        for (let k = 0; k < result.length; k += 1) {
           // gefunden und score berechnen
-          if (vals1[j] === result[k].id) {
+          if (vals1[j].toString() === result[k].id) {
             scoreP += result[k].score;
           }
         }
       }
 
       // Anschließend Mitteln und anhaengen
-      scoreP /= vals1.size;
-      collection[i].score = scoreP;
+      if (vals1.length !== 0) {
+        scoreP /= vals1.length;
+      }
+      // ansonsten ist es schon 0
+
+      const temp = collection[i];
+      temp.rating = scoreP;
+      toReturn.push(temp);
     }
-    res.send(collection);
+    callback(toReturn);
   });
 }
 
@@ -702,8 +711,16 @@ function calcRating(collection, res) {
  */
 function searchAction(req, res) {
   if (req.query.param === undefined) {
-    // TODO gib alle öffentlichen aus
-    res.send('Kaputter Query String, Junge');
+    // gib alle öffentlichen aus
+    dbmodel.set.findPublic((err, sets) => {
+      if (err) {
+        res.send(err);
+      } else {
+        calcRating(sets, (result) => {
+          res.send(result);
+        });
+      }
+    });
   } else {
     const searchParam = req.query.param.split(',');
     const orderByParam = req.query.orderBy;
@@ -713,7 +730,10 @@ function searchAction(req, res) {
         if (err) {
           res.send(err);
         } else {
-          calcRating(result, res);
+          calcRating(result, (result1) => {
+            console.log(result1);
+            res.send(result1);
+          });
         }
       });
     } else if (orderByParam.toLowerCase() === 'date') {
@@ -725,7 +745,9 @@ function searchAction(req, res) {
         if (err) {
           res.send(err);
         } else {
-          calcRating(result, res);
+          calcRating(result, (result1) => {
+            res.send(result1);
+          });
         }
       });
     } else if (orderByParam.toLowerCase() === 'rating') {

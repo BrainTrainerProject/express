@@ -650,7 +650,6 @@ function calcRating(collection, callback) {
   }
 
   const toReturn = [];
-  // TODO: öalskdngslkhg
   dbmodel.valuation.findByIds(vals, (err, result) => {
     // Fuer jedes Set die bewertung ausrechnen
     for (let i = 0; i < collection.length; i += 1) {
@@ -673,12 +672,24 @@ function calcRating(collection, callback) {
       }
       // ansonsten ist es schon 0
 
-      const temp = collection[i];
+      const temp = collection[i].toObject();
       temp.rating = scoreP;
       toReturn.push(temp);
     }
     callback(toReturn);
   });
+}
+
+function orderByRating(list, sortParam) {
+  let sortP = false;
+  if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
+    sortP = true;
+  }
+  if (sortP) {
+    list.sort((a, b) => a.rating - b.rating);
+  } else {
+    list.sort((a, b) => b.rating - a.rating);
+  }
 }
 
 /**
@@ -710,63 +721,59 @@ function calcRating(collection, callback) {
  * ]
  */
 function searchAction(req, res) {
-  if (req.query.param === undefined) {
+  const searchParam = req.query.param;
+  const sortParam = req.query.sort;
+  const orderByParam = req.query.orderBy;
+
+  if (searchParam === undefined) {
     // gib alle öffentlichen aus
     dbmodel.set.findPublic((err, sets) => {
       if (err) {
         res.send(err);
       } else {
         calcRating(sets, (result) => {
+          orderByRating(result, sortParam);
           res.send(result);
         });
       }
     });
-  } else {
-    const searchParam = req.query.param.split(',');
-    const orderByParam = req.query.orderBy;
-    const sortParam = req.query.sort;
-    if (orderByParam === undefined) {
-      dbmodel.set.search(searchParam, false, false, (err, result) => {
-        if (err) {
-          res.send(err);
-        } else {
-          calcRating(result, (result1) => {
-            console.log(result1);
-            res.send(result1);
-          });
-        }
-      });
-    } else if (orderByParam.toLowerCase() === 'date') {
-      let sortP = false;
-      if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
-        sortP = true;
+  } else if (orderByParam === undefined) {
+    dbmodel.set.search(searchParam.split(','), false, false, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        calcRating(result, (result1) => {
+          res.send(result1);
+        });
       }
-      dbmodel.set.search(searchParam, true, sortP, (err, result) => {
-        if (err) {
-          res.send(err);
-        } else {
-          calcRating(result, (result1) => {
-            res.send(result1);
-          });
-        }
-      });
-    } else if (orderByParam.toLowerCase() === 'rating') {
-      let sortP = false;
-      if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
-        sortP = true;
-      }
-      dbmodel.set.search(searchParam, true, sortP, (err, result) => {
-        if (err) {
-          res.send(err);
-        } else {
-          // TODO Bewertung ausrechnen
-          // TODO nach Bewertung sortieren dbmodel
-          res.send(result);
-        }
-      });
-    } else {
-      res.send('orderBy: date oder rating');
+    });
+  } else if (orderByParam.toLowerCase() === 'date') {
+    let sortP = false;
+    if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
+      sortP = true;
     }
+    dbmodel.set.search(searchParam, true, sortP, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        calcRating(result, (result1) => {
+          res.send(result1);
+        });
+      }
+    });
+  } else if (orderByParam.toLowerCase() === 'rating') {
+    dbmodel.set.search(searchParam, false, false, (err, result) => {
+      if (err) {
+        res.send(err);
+      } else {
+        calcRating(result, (result1) => {
+          orderByRating(result1, sortParam);
+          res.send(result1);
+        });
+      }
+    });
+  } else {
+    res.send('orderBy: date oder rating');
   }
 }
 

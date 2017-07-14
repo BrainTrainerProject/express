@@ -1,8 +1,8 @@
 import dbmodel from 'bt-mongodb';
-import websocket from '../websocket';
 
 const NO_OBJECT_ID = 'There was no id in the request';
 
+// for each activity in the activities list profiles gets linked to its coresponding places
 function mapProfileToActivity(activities, callback) {
   const idsProfile = [];
 
@@ -45,8 +45,8 @@ function mapProfileToActivity(activities, callback) {
  * [
  *   {
  *     "_id": "594282b35b08b83670439abd",
- *     "owner": "5942637d16560b00013afd9d",
- *     "sender": "59425e658878750001a42a78",
+ *     "owner": <profile object>,
+ *     "sender": <profile object>,
  *     "activityType": "set_new",
  *     "__v": 0
  *   },...
@@ -65,7 +65,7 @@ function pageActivityAction(req, res) {
 }
 
 /**
- * @api             {get} notecard GET activities
+ * @api             {get} notecard GET activities by id
  * @apiName         GetPagewiseActivitiesById
  * @apiGroup        activity
  * @apiDescription  Collects all the activities of the page with an offset of 10
@@ -80,8 +80,8 @@ function pageActivityAction(req, res) {
  * [
  *   {
  *     "_id": "594282b35b08b83670439abd",
- *     "owner": "5942637d16560b00013afd9d",
- *     "sender": "59425e658878750001a42a78",
+ *     "owner": <profile object>,
+ *     "sender": <profile object>,
  *     "activityType": "set_new",
  *     "__v": 0
  *   },...
@@ -103,25 +103,7 @@ function pageActivityByIdAction(req, res) {
   }
 }
 
-function createActivityForFollower(creator, type) {
-  for (let i = 0; i < creator.follower.length; i += 1) {
-    const jso = {
-      owner: creator.follower[i],
-      sender: creator.id,
-      activityType: type,
-    };
-    dbmodel.activity.createActivity(jso, (err, newActivity) => {
-      if (err) {
-        console.log(err);
-      } else {
-        websocket.notify(creator, newActivity);
-      }
-    });
-  }
-}
-
 export default {
   pageActivityAction,
   pageActivityByIdAction,
-  createActivityForFollower,
 };

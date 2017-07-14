@@ -1,9 +1,6 @@
 import dbmodel from 'bt-mongodb';
 import activityController from './activity.controller';
 
-// Man kommt nur soweit, wenn man sich authorisiert *hat*. daher wird hier nie
-// auf req.auth0.id geprueft.
-
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
 const BODY_EMPTY = 'The body was empty';
 const NO_OBJECT_ID = 'There was no id in the request';

@@ -213,7 +213,6 @@ function getPracticeBySetIdAndAmountAction(req, res) {
  *
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
- * TODO
  */
 function evaluatePractice(req, res) {
   dbmodel.statistic.findByOwner(req.auth0.id, (err, stats) => {
@@ -252,16 +251,13 @@ function evaluatePractice(req, res) {
       });
     }
 
-    console.log('before');
     dbmodel.statistic.updateStatisticMultiple(updatedStats, (err1, oldStats) => {
       console.log(oldStats);
       if (err1) {
-        console.log(err1);
         res.send(err1);
       } else {
         dbmodel.statistic.createStatisticMultiple(createStats, (err2) => {
           if (err2) {
-            console.log(err2);
             res.send(err2);
           } else {
             res.send('k');

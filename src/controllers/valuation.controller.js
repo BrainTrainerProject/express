@@ -23,7 +23,6 @@ function getByIdAction(req, res) {
 }
 
 function createAction(req, res) {
-  // TODO: Aus sicherheitstechnischen Gruenden wuerde man eigentlich req.body filtern
   dbmodel.valuation.createValuation(req.body, (err, newValuation) => {
     if (err) {
       // error logging

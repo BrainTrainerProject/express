@@ -23,7 +23,6 @@ function getByIdAction(req, res) {
 }
 
 function createAction(req, res) {
-  // TODO: Aus sicherheitstechnischen Gruenden wuerde man eigentlich req.body filtern
   dbmodel.statistic.createStatistic(req.body, (err, newStatistic) => {
     if (err) {
       // error logging

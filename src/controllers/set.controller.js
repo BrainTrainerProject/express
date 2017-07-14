@@ -738,7 +738,9 @@ function searchAction(req, res) {
       }
     });
   } else if (orderByParam === undefined) {
-    const regex = searchParam.split(',').map(e => new RegExp(`${e}*`, 'i'));
+    const regex = searchParam.split(',')
+    .filter(e => e)
+    .map(e => new RegExp(`${e}*`, 'i'));
     dbmodel.set.search(regex, false, false, (err, result) => {
       if (err) {
         res.send(err);
@@ -753,7 +755,9 @@ function searchAction(req, res) {
     if (sortParam !== undefined && sortParam.toLowerCase() === 'asc') {
       sortP = true;
     }
-    const regex = searchParam.split(',').map(e => new RegExp(`${e}*`, 'i'));
+    const regex = searchParam.split(',')
+    .filter(e => e)
+    .map(e => new RegExp(`${e}*`, 'i'));
     dbmodel.set.search(regex, true, sortP, (err, result) => {
       if (err) {
         res.send(err);
@@ -764,7 +768,9 @@ function searchAction(req, res) {
       }
     });
   } else if (orderByParam.toLowerCase() === 'rating') {
-    const regex = searchParam.split(',').map(e => new RegExp(`${e}*`, 'i'));
+    const regex = searchParam.split(',')
+    .filter(e => e)
+    .map(e => new RegExp(`${e}*`, 'i'));
     dbmodel.set.search(regex, false, false, (err, result) => {
       if (err) {
         res.send(err);

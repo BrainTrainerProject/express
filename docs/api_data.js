@@ -38,6 +38,57 @@ define({ "api": [
     "groupTitle": "activity"
   },
   {
+    "type": "get",
+    "url": "notecard",
+    "title": "GET activities",
+    "name": "GetPagewiseActivitiesById",
+    "group": "activity",
+    "description": "<p>Collects all the activities of the page with an offset of 10 entries.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer JWT Token</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the owner</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "AuthToken"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Response 200",
+          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": \"5942637d16560b00013afd9d\",\n    \"sender\": \"59425e658878750001a42a78\",\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "src/controllers/activity.controller.js",
+    "groupTitle": "activity"
+  },
+  {
     "type": "delete",
     "url": "notecard/:id",
     "title": "DELETE Notecard",
@@ -546,11 +597,11 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "practice",
+    "url": "practice/evaluate",
     "title": "POST evaluate Practice",
     "name": "PracticeEvaluate",
     "group": "practice",
-    "description": "<p>Evaluates the practice. It will create or  update statistics for the given practice.</p>",
+    "description": "<p>Evaluates the practice. It will create or update statistics for the given practice.</p>",
     "header": {
       "fields": {
         "Header": [
@@ -585,7 +636,7 @@ define({ "api": [
         },
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\nTODO",
+          "content": "Content-Type: application/json",
           "type": "json"
         }
       ]
@@ -990,6 +1041,19 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id of the set</p>"
+          }
+        ]
+      }
+    },
     "permission": [
       {
         "name": "AuthToken"
@@ -1010,7 +1074,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "set/search?param=:param1,param2",
+    "url": "set/search?param=:param1,param2&orderBy=:date&sort=:asc",
     "title": "GET Set",
     "name": "GetSetSearch",
     "group": "set",

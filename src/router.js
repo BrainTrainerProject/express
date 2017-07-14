@@ -57,6 +57,7 @@ router.put('/statistic/:id', statisticController.updateAction);
 router.delete('/statistic/:id', statisticController.deleteAction);
 
 router.get('/activity/:page', activityController.pageActivityAction);
+router.get('/activity/:id/:page', activityController.pageActivityByIdAction);
 
 router.get('/practice', practiceController.getPracticeAction);
 router.get('/practice/:cardsPerSession', practiceController.getPracticeActionWithAmount);

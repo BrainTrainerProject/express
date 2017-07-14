@@ -29,6 +29,10 @@ function appendStatistic(prof, res) {
   });
 }
 
+function getProfile(id, callback) {
+  dbmodel.profile.findById(id, callback);
+}
+
 /**
  * @api             {get} profile GET specified profile
  * @apiName         GetSpecifiedProfile
@@ -54,7 +58,7 @@ function appendStatistic(prof, res) {
  * }
  */
 function getByIdAction(req, res) {
-  dbmodel.profile.findById(req.params.id, (err, profile) => {
+  getProfile(req.params.id, (err, profile) => {
     if (err) {
       res.send(CONTACT_ADMIN);
     } else if (profile.visibility) {
@@ -264,4 +268,5 @@ export default {
   deleteAction,
   followAction,
   unfollowAction,
+  getProfile,
 };

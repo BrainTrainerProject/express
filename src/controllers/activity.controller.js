@@ -3,6 +3,33 @@ import websocket from '../websocket';
 
 const NO_OBJECT_ID = 'There was no id in the request';
 
+function mapProfileToActivity(activities, callback) {
+  const idsProfile = [];
+
+  // Alle ids ermitteln
+  for (let i = 0; i < activities.length; i += 1) {
+    idsProfile.push(activities[i].owner.toString());
+    idsProfile.push(activities[i].sender.toString());
+  }
+
+  dbmodel.profile.findByIds(idsProfile, (err, profiles) => {
+    const acti = [];
+    for (let i = 0; i < activities.length; i += 1) {
+      const temp = activities[i].toObject();
+      for (let j = 0; j < profiles.length; j += 1) {
+        if (activities[i].sender.toString() === profiles[j].id) {
+          temp.sender = profiles[j];
+        }
+        if (activities[i].owner.toString() === profiles[j].id) {
+          temp.owner = profiles[j];
+        }
+        acti.push(temp);
+      }
+    }
+    callback(acti);
+  });
+}
+
 /**
  * @api             {get} notecard GET activities
  * @apiName         GetPagewiseActivities
@@ -30,7 +57,9 @@ function pageActivityAction(req, res) {
     if (err) {
       res.send(err);
     } else {
-      res.send(activities);
+      mapProfileToActivity(activities, (act) => {
+        res.send(act);
+      });
     }
   });
 }
@@ -66,7 +95,9 @@ function pageActivityByIdAction(req, res) {
       if (err) {
         res.send(err);
       } else {
-        res.send(activities);
+        mapProfileToActivity(activities, (act) => {
+          res.send(act);
+        });
       }
     });
   }

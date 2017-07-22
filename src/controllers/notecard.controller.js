@@ -19,8 +19,8 @@ const NOT_OWNER = 'you are not the owner of that object';
  *
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
- * {
- *   "593eaebcf8ac692c4c13b2c1": {
+ * [
+ *   {
  *     "_id": "593eaebcf8ac692c4c13b2c1",
  *     "title": "Lorem Ipsum",
  *     "task": "Dolor Sit",
@@ -28,17 +28,8 @@ const NOT_OWNER = 'you are not the owner of that object';
  *     "owner": "593eaa0bcf7f5000011c24c4",
  *     "lastchange": "2017-06-12T15:58:37.406Z",
  *     "__v": 0
- *   },
- *   "593eba2d2de774329cfc492d": {
- *   "_id": "593eba2d2de774329cfc492d",
- *   "title": "Lorem Ipsum wuppi",
- *   "task": "Dolor Sit fluppi",
- *   "answer": "Ahmet",
- *   "owner": "593eaa0bcf7f5000011c24c4",
- *   "lastchange": "2017-06-12T15:58:37.406Z",
- *   "__v": 0
- *   }
- * }
+ *   },...
+ * ]
  */
 function getAllAction(req, res) {
   dbmodel.notecard.findByOwner(req.auth0.id, (err, map) => {

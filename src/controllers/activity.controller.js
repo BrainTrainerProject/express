@@ -1,6 +1,29 @@
 import dbmodel from 'bt-mongodb';
+import websocket from '../websocket';
 
 const NO_OBJECT_ID = 'There was no id in the request';
+
+function createActivityForFollower(profile, message) {
+  dbmodel.profile.findByIds(profile.follower, (err1, follower) => {
+    // create temporaty Activities
+    const activities = [];
+    for (let i = 0; i < follower.length; i += 1) {
+      const temp = {
+        sender: profile.id,
+        owner: follower[i].id,
+        activityType: message,
+      };
+      activities.push(temp);
+    }
+
+    // create Activities for real
+    dbmodel.activity.createActivities(activities, (err2, acts) => {
+      for (let i = 0; i < acts.length; i += 1) {
+        websocket.notify(profile, acts[i]);
+      }
+    });
+  });
+}
 
 // for each activity in the activities list profiles gets linked to its coresponding places
 function mapProfileToActivity(activities, callback) {
@@ -106,4 +129,5 @@ function pageActivityByIdAction(req, res) {
 export default {
   pageActivityAction,
   pageActivityByIdAction,
+  createActivityForFollower,
 };

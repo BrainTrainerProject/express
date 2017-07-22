@@ -254,7 +254,7 @@ function unfollowAction(req, res) {
         res.send(err);
       } else {
         res.send(profile);
-        websocket.notify('profile_follower_add', JSON.stringify(profile));
+        websocket.notify('profile_follower_remove', JSON.stringify(profile));
       }
     });
   }

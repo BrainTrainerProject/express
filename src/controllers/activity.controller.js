@@ -16,12 +16,14 @@ function createActivityForFollower(profile, message) {
       activities.push(temp);
     }
 
-    // create Activities for real
-    dbmodel.activity.createActivities(activities, (err2, acts) => {
-      for (let i = 0; i < acts.length; i += 1) {
-        websocket.notify(profile, acts[i]);
-      }
-    });
+    if (activities.length > 0) {
+      // create Activities for real
+      dbmodel.activity.createActivities(activities, (err2, acts) => {
+        for (let i = 0; i < acts.length; i += 1) {
+          websocket.notify(profile, acts[i]);
+        }
+      });
+    }
   });
 }
 

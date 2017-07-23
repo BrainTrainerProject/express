@@ -282,7 +282,7 @@ function deleteAction(req, res) {
     dbmodel.notecard.findById(req.params.id, (err, card) => {
       if (err) {
         res.send(CONTACT_ADMIN);
-      } else if (card.owner.toString() === req.auth0.id) {
+      } else if (card && card.owner.toString() === req.auth0.id) {
         dbmodel.notecard.deleteNotecard(req.params.id, (err1, result) => {
           if (err1) {
             res.send(CONTACT_ADMIN);

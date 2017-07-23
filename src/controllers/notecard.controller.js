@@ -86,6 +86,7 @@ function getByIdAction(req, res) {
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
  * @apiHeader       {String} Content-Type application/json
+ * @apiHeader       {String} Content-Type application/json
  * @apiPermission   AuthToken
  *
  * @apiSuccessExample {json} Request
@@ -135,6 +136,7 @@ function createAction(req, res) {
  * Emits the notecard_new event on the websocket for follower.
  *
  * @apiHeader       {String} Authorization Bearer JWT Token
+ * @apiHeader       {String} Content-Type application/json
  * @apiParam        {Number} id id of the Set on which the newly created
  * Notecard will be appended to.
  * @apiPermission   AuthToken
@@ -273,6 +275,7 @@ function updateAction(req, res) {
  * }
  */
 function deleteAction(req, res) {
+  // TODO alle Referenzen entfernen
   if (req.params === null || req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {

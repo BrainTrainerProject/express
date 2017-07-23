@@ -28,7 +28,7 @@
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": \"5942637d16560b00013afd9d\",\n    \"sender\": \"59425e658878750001a42a78\",\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
+          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": <profile object>,\n    \"sender\": <profile object>,\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
           "type": "json"
         }
       ]
@@ -40,7 +40,7 @@
   {
     "type": "get",
     "url": "notecard",
-    "title": "GET activities",
+    "title": "GET activities by id",
     "name": "GetPagewiseActivitiesById",
     "group": "activity",
     "description": "<p>Collects all the activities of the page with an offset of 10 entries.</p>",
@@ -79,7 +79,7 @@
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": \"5942637d16560b00013afd9d\",\n    \"sender\": \"59425e658878750001a42a78\",\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
+          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"594282b35b08b83670439abd\",\n    \"owner\": <profile object>,\n    \"sender\": <profile object>,\n    \"activityType\": \"set_new\",\n    \"__v\": 0\n  },...\n]",
           "type": "json"
         }
       ]
@@ -168,7 +168,7 @@
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n  \"593eaebcf8ac692c4c13b2c1\": {\n    \"_id\": \"593eaebcf8ac692c4c13b2c1\",\n    \"title\": \"Lorem Ipsum\",\n    \"task\": \"Dolor Sit\",\n    \"answer\": \"Ahmet\",\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-12T15:58:37.406Z\",\n    \"__v\": 0\n  },\n  \"593eba2d2de774329cfc492d\": {\n  \"_id\": \"593eba2d2de774329cfc492d\",\n  \"title\": \"Lorem Ipsum wuppi\",\n  \"task\": \"Dolor Sit fluppi\",\n  \"answer\": \"Ahmet\",\n  \"owner\": \"593eaa0bcf7f5000011c24c4\",\n  \"lastchange\": \"2017-06-12T15:58:37.406Z\",\n  \"__v\": 0\n  }\n}",
+          "content": "Content-Type: application/json\n[\n  {\n    \"_id\": \"593eaebcf8ac692c4c13b2c1\",\n    \"title\": \"Lorem Ipsum\",\n    \"task\": \"Dolor Sit\",\n    \"answer\": \"Ahmet\",\n    \"owner\": \"593eaa0bcf7f5000011c24c4\",\n    \"lastchange\": \"2017-06-12T15:58:37.406Z\",\n    \"__v\": 0\n  },...\n]",
           "type": "json"
         }
       ]
@@ -294,6 +294,13 @@
             "optional": false,
             "field": "Authorization",
             "description": "<p>Bearer JWT Token</p>"
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-Type",
+            "description": "<p>application/json</p>"
           }
         ]
       }
@@ -1587,7 +1594,7 @@
         },
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n\"_id\": \"59402f281704792b4c4a151f\",\n\"owner\": \"593eaa0bcf7f5000011c24c4\",\n\"lastchange\": \"2017-06-13T18:53:38.560Z\",\n\"visibility\": false,\n\"photourl\": \"\",\n\"title\": \"Never gonna run around\",\n\"description\": \"and desert you\",\n\"__v\": 0,\n\"valuations\": [],\n\"tags\": [ \"wuppi\", \"fluppi\", \"duppi\" ],\n\"notecard\": [ \"593eaebcf8ac692c4c13b2c1\", \"593eba2d2de774329cfc492d\" ]\n}",
+          "content": "Content-Type: application/json\n{\n  \"_id\": \"59402f281704792b4c4a151f\",\n  \"owner\": \"593eaa0bcf7f5000011c24c4\",\n  \"lastchange\": \"2017-06-13T18:53:38.560Z\",\n  \"visibility\": false,\n  \"photourl\": \"\",\n  \"title\": \"Never gonna run around\",\n  \"description\": \"and desert you\",\n  \"__v\": 0,\n  \"valuations\": [],\n  \"tags\": [ \"wuppi\", \"fluppi\", \"duppi\" ],\n  \"notecard\": [ \"593eaebcf8ac692c4c13b2c1\", \"593eba2d2de774329cfc492d\" ]\n}",
           "type": "json"
         }
       ]

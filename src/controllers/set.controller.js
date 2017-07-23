@@ -212,18 +212,18 @@ function createAction(req, res) {
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
  * {
- * "_id": "59402f281704792b4c4a151f",
- * "owner": "593eaa0bcf7f5000011c24c4",
- * "lastchange": "2017-06-13T18:53:38.560Z",
- * "visibility": false,
- * "photourl": "",
- * "title": "Never gonna run around",
- * "description": "and desert you",
- * "__v": 0,
- * "valuations": [],
- * "tags": [ "wuppi", "fluppi", "duppi" ],
- * "notecard": [ "593eaebcf8ac692c4c13b2c1", "593eba2d2de774329cfc492d" ]
-}
+ *   "_id": "59402f281704792b4c4a151f",
+ *   "owner": "593eaa0bcf7f5000011c24c4",
+ *   "lastchange": "2017-06-13T18:53:38.560Z",
+ *   "visibility": false,
+ *   "photourl": "",
+ *   "title": "Never gonna run around",
+ *   "description": "and desert you",
+ *   "__v": 0,
+ *   "valuations": [],
+ *   "tags": [ "wuppi", "fluppi", "duppi" ],
+ *   "notecard": [ "593eaebcf8ac692c4c13b2c1", "593eba2d2de774329cfc492d" ]
+ * }
  */
 function updateAction(req, res) {
   if (req.params === null || req.params.id === null) {

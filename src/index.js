@@ -37,3 +37,5 @@ dbmodels.connect(conf.mongodb, (err) => {
     });
   }
 });
+
+module.exports = app;

@@ -49,31 +49,36 @@ mocha.describe('Notecards REST', () => {
   UPDATE
   */
   mocha.it('it should UPDATE a notecard', (done) => {
-    let updurl = null;
-    const notecard = {
-      title: 'Englisch Vokabeln Update',
-      task: 'Was heißt comment?',
-      answer: 'Kommentar',
-    };
-    chai.request(app)
-    .get('api/notecard')
-    .set('Authorization', TOKEN)
-    .end((err, res) => {
-      chai.expect(res).to.have.status(200);
-      /* eslint no-underscore-dangle: 0 */
-      const updid = (res.body)[0]._id;
-      updurl = `/api/notecard/${updid}`;
-    });
-    console.log('update url ', updurl);
-    chai.request(app)
-    .put(updurl)
-    .set('Authorization', TOKEN)
-    .end((err, res) => {
-      if (err) { console.log(err); }
-      chai.expect(res).to.have.status(200);
-      chai.expect((res.body).title).to.equal(notecard.title);
-      done();
-    });
+    async.waterfall([
+      (next) => {
+        const notecard = {
+          title: 'Englisch Vokabeln Update',
+          task: 'Was heißt comment?',
+          answer: 'Kommentar',
+        };
+        chai.request(app)
+        .get('/api/notecard')
+        .set('Authorization', TOKEN)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          /* eslint no-underscore-dangle: 0 */
+          const updid = (res.body)[0]._id;
+          const updurl = `/api/notecard/${updid}`;
+          const notecardtitle = notecard.title;
+          next(null, updurl, notecardtitle);
+        });
+      },
+      (updurl, notecardtitle, next) => {
+        chai.request(app)
+        .put(updurl)
+        .set('Authorization', TOKEN)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          chai.expect((res.body).title).to.equal(notecardtitle);
+          next(null);
+        });
+      },
+    ], done);
   }).timeout(30000);
 
   /*

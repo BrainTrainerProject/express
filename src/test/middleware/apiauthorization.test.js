@@ -1,4 +1,4 @@
-import { describe, it, before } from 'mocha';
+/* import { describe, it, before } from 'mocha';
 import jsonwebtoken from 'jsonwebtoken';
 import dbmodel from 'bt-mongodb';
 import apiauthorization from '../../middleware/apiauthorization';
@@ -33,7 +33,8 @@ describe('apiauthorization', () => {
     });
 
     it('should call callback with error json 2', (done) => {
-      apiauthorization.extractTokenFromHeader({ authorization: 'Something else' }, (error, token) => {
+      apiauthorization.extractTokenFromHeader({ authorization: 'Something else' },
+       (error, token) => {
         assert.deepEqual(error, errorcodes.wrongAuthHeader());
         assert.isNull(token);
         done();
@@ -239,4 +240,4 @@ describe('apiauthorization', () => {
       apiauthorization.apiAuth(req, res, undefined);
     });
   });
-});
+});*/

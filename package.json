@@ -38,6 +38,7 @@
     "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git",
     "bt-mongodb": "git+https://github.com/BrainTrainerProject/mongodb.git",
     "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
     "cors": "^2.8.3",
     "express": "^4.15.2",
     "jsonwebtoken": "^7.4.1",

@@ -34,6 +34,7 @@
     ]
   },
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "^1.17.1",
     "bt-cyclejs": "git+https://github.com/BrainTrainerProject/cyclejs.git",
     "bt-mongodb": "git+https://github.com/BrainTrainerProject/mongodb.git",

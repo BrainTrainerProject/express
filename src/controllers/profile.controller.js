@@ -1,5 +1,4 @@
 import dbmodel from 'bt-mongodb';
-import websocket from '../websocket';
 // import mobileN from '../mobile-notifier';
 
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
@@ -200,16 +199,7 @@ function deleteAction(req, res) {
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
  * {
- *   "_id": "59425e658878750001a42a78",
- *   "email": "twiens@fh-bielefeld.de",
- *   "oauthtoken": "auth0|59425e65b2cd9007c3fb5483",
- *   "photourl": "https://s.gravatar.com/avatar/4d3e6507d746b3b849444628a79cf086?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftw.png",
- *   "visibility": false,
- *   "__v": 0,
- *   "sets": [],
- *   "follower": [
- *     "5942637d16560b00013afd9d"
- *   ]
+ *   status: 'ok'
  * }
  */
 function followAction(req, res) {
@@ -218,10 +208,11 @@ function followAction(req, res) {
   } else {
     dbmodel.profile.addFollower(req.params.id, [req.auth0.id], (err, profile) => {
       if (err) {
-        res.send(err);
+        // error logging
+        res.send({ status: 'error' });
       } else {
-        res.send(profile);
-        websocket.notify('profile_follower_add', JSON.stringify(profile));
+        res.send({ status: 'ok' });
+        console.log(profile);
       }
     });
   }
@@ -241,29 +232,20 @@ function followAction(req, res) {
  * @apiSuccessExample {json} Response 200
  * Content-Type: application/json
  * {
- *   "_id": "59425e658878750001a42a78",
- *   "email": "twiens@fh-bielefeld.de",
- *   "oauthtoken": "auth0|59425e65b2cd9007c3fb5483",
- *   "photourl": "https://s.gravatar.com/avatar/4d3e6507d746b3b849444628a79cf086?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftw.png",
- *   "visibility": false,
- *   "__v": 0,
- *   "sets": [],
- *   "follower": [
- *     "5942637d16560b00013afd9d",
- *     "5942637d16560b00013afd9d"
- *   ]
+ *   status: 'ok'
  * }
  */
 function unfollowAction(req, res) {
   if (req.params.id === null) {
     res.send(NO_OBJECT_ID);
   } else {
-    dbmodel.profile.addFollower(req.params.id, [req.auth0.id], (err, profile) => {
+    dbmodel.profile.removeFollower(req.params.id, [req.auth0.id], (err, profile) => {
       if (err) {
-        res.send(err);
+        // error logging
+        res.send({ status: 'error' });
       } else {
-        res.send(profile);
-        websocket.notify('profile_follower_remove', JSON.stringify(profile));
+        res.send({ status: 'ok' });
+        console.log(profile);
       }
     });
   }

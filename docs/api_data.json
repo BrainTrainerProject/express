@@ -777,7 +777,7 @@
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n  \"_id\": \"59425e658878750001a42a78\",\n  \"email\": \"twiens@fh-bielefeld.de\",\n  \"oauthtoken\": \"auth0|59425e65b2cd9007c3fb5483\",\n  \"photourl\": \"https://s.gravatar.com/avatar/4d3e6507d746b3b849444628a79cf086?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftw.png\",\n  \"visibility\": false,\n  \"__v\": 0,\n  \"sets\": [],\n  \"follower\": [\n    \"5942637d16560b00013afd9d\"\n  ]\n}",
+          "content": "Content-Type: application/json\n{\n  status: 'ok'\n}",
           "type": "json"
         }
       ]
@@ -835,7 +835,7 @@
       "examples": [
         {
           "title": "Response 200",
-          "content": "Content-Type: application/json\n{\n  \"_id\": \"59425e658878750001a42a78\",\n  \"email\": \"twiens@fh-bielefeld.de\",\n  \"oauthtoken\": \"auth0|59425e65b2cd9007c3fb5483\",\n  \"photourl\": \"https://s.gravatar.com/avatar/4d3e6507d746b3b849444628a79cf086?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Ftw.png\",\n  \"visibility\": false,\n  \"__v\": 0,\n  \"sets\": [],\n  \"follower\": [\n    \"5942637d16560b00013afd9d\",\n    \"5942637d16560b00013afd9d\"\n  ]\n}",
+          "content": "Content-Type: application/json\n{\n  status: 'ok'\n}",
           "type": "json"
         }
       ]

@@ -51,11 +51,6 @@ mocha.describe('Notecards REST', () => {
   mocha.it('it should UPDATE a notecard', (done) => {
     async.waterfall([
       (next) => {
-        const notecard = {
-          title: 'Englisch Vokabeln Update',
-          task: 'Was heißt comment?',
-          answer: 'Kommentar',
-        };
         chai.request(app)
         .get('/api/notecard')
         .set('Authorization', TOKEN)
@@ -64,17 +59,22 @@ mocha.describe('Notecards REST', () => {
           /* eslint no-underscore-dangle: 0 */
           const updid = (res.body)[0]._id;
           const updurl = `/api/notecard/${updid}`;
-          const notecardtitle = notecard.title;
-          next(null, updurl, notecardtitle);
+          next(null, updurl);
         });
       },
-      (updurl, notecardtitle, next) => {
+      (updurl, next) => {
+        const notecard = {
+          title: 'Englisch Vokabeln Update',
+          task: 'Was heißt comment?',
+          answer: 'Kommentar',
+        };
         chai.request(app)
         .put(updurl)
         .set('Authorization', TOKEN)
+        .send(notecard)
         .end((err, res) => {
           chai.expect(res).to.have.status(200);
-          chai.expect((res.body).title).to.equal(notecardtitle);
+          chai.expect((res.body).title).to.equal(notecard.title);
           next(null);
         });
       },

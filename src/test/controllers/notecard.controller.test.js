@@ -11,7 +11,7 @@ mocha.describe('Notecards REST', () => {
   /*
   READ
   */
-  mocha.it('it should GET all notecards', (done) => {
+  mocha.it('it should GET All notecards', (done) => {
     chai.request(app)
     .get('/api/notecard')
     .set('Authorization', TOKEN)

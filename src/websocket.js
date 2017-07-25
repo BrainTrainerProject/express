@@ -22,16 +22,28 @@ function createApplication(server) {
 
   io.on('connection', (socket) => {
     console.log('try to connect');
-    auth.extractTokenFromHeader(socket.request.headers, (err, token) => {
-      if (err) {
+    const ss = socket;
+    ss.authorized = false;
+    socket.emit('connected', { connected: true, authorized: false });
+
+    setTimeout(() => {
+      if (!ss.authorized) {
+        socket.disconnect(true);
+      }
+    }, 2000); // 2 second to authorize or kill the socket
+
+    socket.on('authorize', (data) => {
+      ss.authorized = true;
+      if (!data.token) {
         socket.disconnect(true);
       } else {
-        auth.getProfile(token, (err1, profile) => {
+        auth.getProfile(data.token, (err1, profile) => {
           if (err1 || profile === null) {
             socket.disconnect(true);
           } else {
             const iid = setInterval(() => {
               socket.emit('practice_begin', 'justDoIt!');
+              console.log('submit practice');
             }, profile.interval * 60 * 1000);
             users.push({ socket, profile, iid });
             console.log('connect successful');

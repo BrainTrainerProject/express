@@ -29,6 +29,10 @@ function appendStatistic(prof, res) {
   });
 }
 
+function getProfiles(callback) {
+  dbmodel.profile.findAll(callback);
+}
+
 function getProfile(id, callback) {
   dbmodel.profile.findById(id, callback);
 }
@@ -269,4 +273,5 @@ export default {
   followAction,
   unfollowAction,
   getProfile,
+  getProfiles,
 };

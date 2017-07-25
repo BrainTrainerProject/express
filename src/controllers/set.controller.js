@@ -284,7 +284,7 @@ function deleteAction(req, res) {
     dbmodel.set.findById(req.params.id, (err, set) => {
       if (err) {
         res.send(CONTACT_ADMIN);
-      } else if (set.owner.toString() === req.auth0.id) {
+      } else if (set && set.owner.toString() === req.auth0.id) {
         dbmodel.set.deleteSet(req.params.id, (err1, result) => {
           if (err1) {
             res.send(CONTACT_ADMIN);

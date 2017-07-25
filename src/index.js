@@ -6,6 +6,7 @@ import dbmodels from 'bt-mongodb';
 import cors from 'cors';
 import router from './router';
 import websocket from './websocket';
+import mobileN from './mobile-notifier';
 
 const conf = require('./config.json');
 
@@ -26,6 +27,7 @@ app.post('/echo', (req, res) => {
 
 app.use('/api', router);
 websocket.createApplication(server);
+mobileN.startProcess();
 
 dbmodels.connect(conf.mongodb, (err) => {
   if (err) {

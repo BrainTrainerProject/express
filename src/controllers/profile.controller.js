@@ -69,7 +69,7 @@ function getByIdAction(req, res) {
     } else if (profile.visibility) {
       appendStatistic(profile, res);
     } else {
-      res.send(res.send(NOT_VISIBLE));
+      res.send(NOT_VISIBLE);
     }
   });
 }

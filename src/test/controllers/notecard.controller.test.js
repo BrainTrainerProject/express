@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import mocha from 'mocha';
+import async from 'async';
 import app from '../../index';
 
 chai.use(chaiHttp);
@@ -48,6 +49,7 @@ mocha.describe('Notecards REST', () => {
   UPDATE
   */
   mocha.it('it should UPDATE a notecard', (done) => {
+    let updurl = null;
     const notecard = {
       title: 'Englisch Vokabeln Update',
       task: 'Was heißt comment?',
@@ -60,16 +62,17 @@ mocha.describe('Notecards REST', () => {
       chai.expect(res).to.have.status(200);
       /* eslint no-underscore-dangle: 0 */
       const updid = (res.body)[0]._id;
-      const updurl = `/api/notecard/${updid}`;
-      chai.request(app)
-      .put(updurl)
-      .set('Authorization', TOKEN)
-      .end((err2, res2) => {
-        if (err2) { console.log(err2); }
-        chai.expect(res2).to.have.status(200);
-        chai.expect(res2.body.property('title')).to.equal(notecard.title);
-        done();
-      });
+      updurl = `/api/notecard/${updid}`;
+    });
+    console.log('update url ', updurl);
+    chai.request(app)
+    .put(updurl)
+    .set('Authorization', TOKEN)
+    .end((err, res) => {
+      if (err) { console.log(err); }
+      chai.expect(res).to.have.status(200);
+      chai.expect((res.body).title).to.equal(notecard.title);
+      done();
     });
   }).timeout(30000);
 
@@ -77,24 +80,30 @@ mocha.describe('Notecards REST', () => {
   DELETE
   */
   mocha.it('it should DELETE a notecard', (done) => {
-    chai.request(app)
-    .get('/api/notecard')
-    .set('Authorization', TOKEN)
-    .end((err, res) => {
-      chai.expect(res).to.have.status(200);
-      /* eslint no-underscore-dangle: 0 */
-      const delid = (res.body)[0]._id;
-      const delurl = `/api/notecard/${delid}`;
-      chai.request(app)
-      .del(delurl)
-      .set('Authorization', TOKEN)
-      .end((err2, res2) => {
-        if (err2) { console.log(err2); }
-        chai.expect(res2).to.have.status(200);
-        /* eslint no-underscore-dangle: 0 */
-        chai.expect((res2.body)._id).to.equal((res.body)._id);
-        done();
-      });
-    });
+    async.waterfall([
+      (next) => {
+        chai.request(app)
+        .get('/api/notecard')
+        .set('Authorization', TOKEN)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          /* eslint no-underscore-dangle: 0 */
+          const delid = (res.body)[0]._id;
+          const delurl = `/api/notecard/${delid}`;
+          next(null, delurl, delid);
+        });
+      },
+      (delurl, delid, next) => {
+        chai.request(app)
+        .del(delurl)
+        .set('Authorization', TOKEN)
+        .end((err, res) => {
+          chai.expect(res).to.have.status(200);
+          /* eslint no-underscore-dangle: 0 */
+          chai.expect((res.body)._id).to.equal(delid);
+          next(null);
+        });
+      },
+    ], done);
   }).timeout(30000);
 });

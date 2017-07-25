@@ -1,5 +1,6 @@
 import dbmodel from 'bt-mongodb';
 import websocket from '../websocket';
+// import mobileN from '../mobile-notifier';
 
 const CONTACT_ADMIN = 'there was an error, please contact an admin';
 const BODY_EMPTY = 'The body was empty';
@@ -167,6 +168,10 @@ function updateAction(req, res) {
       res.send(CONTACT_ADMIN);
     } else {
       res.send(changedProfile);
+      /* // anschalten, wenn Zeit zum testen da war :(
+      mobileN.removeProfile(changedProfile.id);
+      mobileN.addProfile(changedProfile);
+      */
     }
   });
 }

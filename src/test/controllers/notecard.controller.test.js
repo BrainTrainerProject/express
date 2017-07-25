@@ -91,7 +91,8 @@ mocha.describe('Notecards REST', () => {
       .end((err2, res2) => {
         if (err2) { console.log(err2); }
         chai.expect(res2).to.have.status(200);
-        chai.expect(res2.body.property('_id')).to.equal(res.body.property('_id'));
+        /* eslint no-underscore-dangle: 0 */
+        chai.expect((res2.body)._id).to.equal((res.body)._id);
         done();
       });
     });

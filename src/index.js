@@ -14,7 +14,7 @@ const app = express();
 const server = http.Server(app);
 
 app.use(cors());
-app.use(express.static('lib/public'));
+// app.use(express.static('lib/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(morgan('combined', { immediate: true }));
@@ -26,6 +26,7 @@ app.post('/echo', (req, res) => {
 });
 
 app.use('/api', router);
+app.all('*', express.static('lib/public'));
 websocket.createApplication(server);
 mobileN.startProcess();
 

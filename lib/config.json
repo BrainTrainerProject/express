@@ -1,0 +1,11 @@
+{
+  "port": 8080,
+  "mongodb": "mongodb://brain:Trainer#2017@ds057806.mlab.com:57806/heroku_b8p1c09m",
+  "auth0": {
+    "clientSecret": "wLcdkhA_h5A_aKctTYYFRwItgt4tpIRr0ZavaCsRBCF0ZIcvnUv1DLHtJo_LpqMn",
+    "clientId": "eq9LvFuMek0D4bScIsObJJ1b61BuKIB3",
+    "domain": "braintrainer.eu.auth0.com"
+  },
+  "firebase_url" : "http://fcm.googleapis.com/fcm/send",
+  "firebase_key" : "key=AAAAQl6AA-Y:APA91bFiGB-A62XfoibCldrXLBI5wlxkgw9JwNyr7MNpusDobpmsBKR5XJ-zZB0IB9dFS5g3sfEnI6mNrmk5dgwEgCGH9_tP4HwrP6ViGj_Nch4rNizEUs2OYzd5siKxJwqTNHZpB5Pj"
+}
